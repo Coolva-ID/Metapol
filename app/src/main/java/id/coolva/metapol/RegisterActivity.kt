@@ -9,6 +9,7 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import id.coolva.metapol.databinding.ActivityLoginBinding
 import id.coolva.metapol.databinding.ActivityRegisterBinding
+import id.coolva.metapol.ui.main.MainActivity
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding

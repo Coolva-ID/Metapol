@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import id.coolva.metapol.databinding.ActivityLoginBinding
+import id.coolva.metapol.ui.main.MainActivity
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding

@@ -29,8 +29,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:exported="true" />
+            android:name=".ui.main.MainActivity"
+            android:exported="true"
+            android:theme="@style/ThemeGray"/>
     </application>
 
 </manifest>
