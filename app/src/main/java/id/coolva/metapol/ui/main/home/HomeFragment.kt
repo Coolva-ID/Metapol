@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import id.coolva.metapol.R
 import id.coolva.metapol.databinding.FragmentHomeBinding
 import id.coolva.metapol.ui.main.form.DaftarSIM
+import id.coolva.metapol.ui.main.form.Pengawalan
 
 
 class HomeFragment : Fragment() {
@@ -30,8 +31,11 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.cardSim.setOnClickListener {
-            val intent = Intent(requireContext(), DaftarSIM::class.java)
-            startActivity(intent)
+            startActivity(Intent(requireContext(), DaftarSIM::class.java))
+        }
+
+        binding.cardPengawalan.setOnClickListener {
+            startActivity(Intent(requireContext(), Pengawalan::class.java))
         }
     }
 

@@ -5,24 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="none"
-    tools:context=".ui.main.form.DaftarSIM">
+    tools:context=".ui.main.form.Pengawalan">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp">
+
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_gol_sim"
+            android:id="@+id/til_kepeluan"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Golongan SIM"
+            android:hint="Untuk Keperluan"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <AutoCompleteTextView
-                android:id="@+id/act_gol_sim"
+                android:id="@+id/act_keperluan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="17dp"
@@ -30,34 +31,30 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_sert_mengemudi"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+            android:id="@+id/til_tanggal"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Sertifikat Sekolah Mengemudi"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:hint="Tanggal"
+            android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/til_gol_sim"
-            android:layout_marginTop="16dp">
+            app:layout_constraintTop_toBottomOf="@id/til_kepeluan">
 
-            <AutoCompleteTextView
-                android:id="@+id/act_sert_mengemudi"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_tanggal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="17dp"
-                android:inputType="none" />
+                android:inputType="date" />
         </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_upload_signature"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="18dp"
-            android:text="Unggah TTD"
-            android:layout_marginTop="25dp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/til_sert_mengemudi"
-            app:layout_constraintStart_toStartOf="parent"/>
+    <DatePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/til_tanggal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
 </ScrollView>

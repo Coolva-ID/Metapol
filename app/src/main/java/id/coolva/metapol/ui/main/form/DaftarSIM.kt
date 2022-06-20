@@ -33,6 +33,7 @@ class DaftarSIM : AppCompatActivity() {
         val actionBar = supportActionBar
         actionBar!!.title = "Pendaftaran Ujian SIM"
         actionBar!!.setBackgroundDrawable(ColorDrawable(0xFFFFFFFF.toInt()))
+        actionBar!!.elevation = 0F
 
         val golSim: Array<String> = resources.getStringArray(R.array.golongan_sim)
         val arrayAdapterGolSim: ArrayAdapter<String> =
