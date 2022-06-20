@@ -18,8 +18,33 @@
     <style name="ThemeGray" parent="Theme.Metapol">
         <item name="android:statusBarColor" tools:targetApi="l">#F6F9FC</item>
     </style>
+    <style name="WithActionBar" parent="Theme.Material3.DayNight">
+        <item name="colorPrimary">@color/yellow_brand</item>
+        <item name="colorPrimaryVariant">@color/white</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/red_brand</item>
+        <item name="colorSecondaryVariant">@color/red_brand</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <!-- Customize your theme here. -->
+        <item name="android:fontFamily">@font/poppins</item>
+    </style>
     <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">#fbe071</item>
         <item name="android:height">50dp</item>
+    </style>
+    <style name="TopBarrTextAppereance">
+        <item name="fontFamily">@font/poppins_semibold</item>
+        <item name="android:fontFamily">@font/poppins_semibold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+    <style name="TabLayoutTextStyle">
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
     </style>
 </resources>
