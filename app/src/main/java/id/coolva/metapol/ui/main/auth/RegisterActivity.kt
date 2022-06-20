@@ -1,4 +1,4 @@
-package id.coolva.metapol
+package id.coolva.metapol.ui.main.auth
 
 import android.content.DialogInterface
 import android.content.Intent
@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import id.coolva.metapol.databinding.ActivityLoginBinding
+import id.coolva.metapol.R
 import id.coolva.metapol.databinding.ActivityRegisterBinding
 import id.coolva.metapol.ui.main.MainActivity
 

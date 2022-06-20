@@ -7,4 +7,22 @@
     <string name="tabs_2">Selesai</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="golongan_sim">
+        <item>A</item>
+        <item>B I</item>
+        <item>B II</item>
+        <item>C</item>
+        <item>C I</item>
+        <item>C II</item>
+        <item>D</item>
+        <item>D</item>
+    </string-array>
+
+    <string-array name="sert_mengemudi">
+        <item>Ada</item>
+        <item>Tidak</item>
+
+    </string-array>
+
 </resources>

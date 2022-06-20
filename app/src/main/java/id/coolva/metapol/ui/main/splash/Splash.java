@@ -1,10 +1,13 @@
-package id.coolva.metapol;
+package id.coolva.metapol.ui.main.splash;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import id.coolva.metapol.R;
+import id.coolva.metapol.ui.main.auth.LoginActivity;
 
 public class Splash extends AppCompatActivity {
 
