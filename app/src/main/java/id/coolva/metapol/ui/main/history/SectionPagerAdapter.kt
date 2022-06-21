@@ -12,8 +12,8 @@ class SectionsPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) 
     override fun createFragment(position: Int): Fragment {
         var fragment: Fragment? = null
         when (position) {
-            0 -> fragment = HistoryProcess()
-            1 -> fragment = HistoryDone()
+            0 -> fragment = HistoryProcessFragment()
+            1 -> fragment = HistoryDoneFragment()
         }
         return fragment as Fragment
     }

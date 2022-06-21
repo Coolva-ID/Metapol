@@ -1,7 +1,12 @@
-package id.coolva.metapol.data.entity.layanan
+package id.coolva.metapol.core.domain.model
 
-data class UjianSIMEntity (
-    val id: Int,
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class SIMRegsitration(
+
+    val id: Int = 0,
     val golonganSIM: String,
     val memilikiSertMengemudi: Boolean,
     val ttdPhotoPath: String,
@@ -10,4 +15,4 @@ data class UjianSIMEntity (
     val contactAddress: String,
     val contactPhoneNo: String,
     val status: String
-)
+) : Parcelable

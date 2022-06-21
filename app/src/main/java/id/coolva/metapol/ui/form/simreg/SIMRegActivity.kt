@@ -12,18 +12,24 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import dagger.hilt.android.AndroidEntryPoint
 import id.coolva.metapol.R
+import id.coolva.metapol.core.domain.model.SIMRegsitration
 import id.coolva.metapol.databinding.ActivitySimRegistrationBinding
 import java.io.File
 
 
+@AndroidEntryPoint
 class SIMRegActivity : AppCompatActivity() {
 
     private val binding by lazy {
         ActivitySimRegistrationBinding.inflate(layoutInflater)
     }
+
+    private val viewModel: SimRegViewModel by viewModels()
 
     private var fileSelected = ""
     private var ttdPhotoFilePath: String = ""
@@ -91,11 +97,9 @@ class SIMRegActivity : AppCompatActivity() {
         }
 
         binding.btnSubmit.setOnClickListener {
-            var isNotEmpty = true
-
-
-
             binding.apply {
+                var isNotEmpty = true
+
                 // get data from user input
                 val golonganSimValue = actGolSim.text.toString()
                 val sertMengemudiValue = actSertMengemudi.text.toString()
@@ -113,46 +117,77 @@ class SIMRegActivity : AppCompatActivity() {
                 Log.e("Check form SIM:", contactAddressValue)
                 Log.e("Check form SIM:", contactPhoneValue)
 
-                if (golonganSimValue.isEmpty()){
+                /**
+                 * CHECKING DATA FROM USER INPUT
+                 */
+                if (golonganSimValue.isEmpty()) {
                     actGolSim.error = "Anda belum memilih Golongan SIM"
                     isNotEmpty = false
                 }
-                if (sertMengemudiValue.isEmpty()){
+                if (sertMengemudiValue.isEmpty()) {
                     actSertMengemudi.error = "Anda belum mengisi Sertifikat Mengemudi"
                     isNotEmpty = false
                 }
 
-                if (ttdPhotoValue.isEmpty()){
-                    Toast.makeText(this@SIMRegActivity, "Anda belum menambahkan Photo TTD", Toast.LENGTH_SHORT).show()
+                if (ttdPhotoValue.isEmpty()) {
+                    Toast.makeText(
+                        this@SIMRegActivity,
+                        "Anda belum menambahkan Photo TTD",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     isNotEmpty = false
                 }
 
-                if (pasPhotoValue.isEmpty()){
-                    Toast.makeText(this@SIMRegActivity, "Anda belum menambahkan Pas Photo", Toast.LENGTH_SHORT).show()
+                if (pasPhotoValue.isEmpty()) {
+                    Toast.makeText(
+                        this@SIMRegActivity,
+                        "Anda belum menambahkan Pas Photo",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     isNotEmpty = false
                 }
 
-                if (contactNameValue.isEmpty()){
+                if (contactNameValue.isEmpty()) {
                     edtContactName.error = "Nama belum diisi"
                     isNotEmpty = false
                 }
-                if (contactAddressValue.isEmpty()){
+                if (contactAddressValue.isEmpty()) {
                     edtContactAddress.error = "Alamat belum diisi"
                     isNotEmpty = false
                 }
-                if (contactPhoneValue.isEmpty()){
+                if (contactPhoneValue.isEmpty()) {
                     edtContactPhone.error = "No. Telepon belum diisi"
                     isNotEmpty = false
                 }
-            }
 
-            if (isNotEmpty){
-                // TODO: create new UjianSIMEntity and direct to history screen
+                /**
+                 * IF ALL FIELD ARE NOT EMPTY
+                 */
+                if (isNotEmpty) {
+                    var memilikiSertMengemudi = false
+                    if (sertMengemudiValue == "Ada") {
+                        memilikiSertMengemudi = true
+                    }
+                    val simReg = SIMRegsitration(
+                        golonganSIM = golonganSimValue,
+                        memilikiSertMengemudi = memilikiSertMengemudi,
+                        ttdPhotoPath = ttdPhotoValue,
+                        pasPhotoPath = pasPhotoValue,
+                        contactName = contactNameValue,
+                        contactAddress = contactAddressValue,
+                        contactPhoneNo = contactPhoneValue,
+                        status = "Menunggu Verifikasi"
+                    )
+                    viewModel.insertSIMRegistration(simReg)
+                    Toast.makeText(this@SIMRegActivity, "Pendaftaran Berhasil Diajukan", Toast.LENGTH_SHORT).show()
+                    onBackPressed()
+                }
             }
         }
     }
 
 
+    // launcher to get PDF File
     private var sActivityResultLauncher = registerForActivityResult(
         StartActivityForResult(),
         ActivityResultCallback<ActivityResult> { result ->
@@ -167,16 +202,16 @@ class SIMRegActivity : AppCompatActivity() {
                     val path = uri?.path
                     Log.e("DAFTAR SIM PATH: ", path.toString())
                     // set file path with name of file
-                    if (path != null){
+                    if (path != null) {
                         val file = File(path)
                         Log.e("DAFTAR SIM NAMA FILE: ", file.name)
 
 
-                        if (this.fileSelected == PAS_PHOTO){
+                        if (this.fileSelected == PAS_PHOTO) {
                             binding.tvPasPhotoPath.text = file.name
                             this.pasPhotoFilePath = path
 
-                        } else if (this.fileSelected == TTD_PHOTO){
+                        } else if (this.fileSelected == TTD_PHOTO) {
                             binding.tvSignaturePhotoPath.text = file.name
                             this.ttdPhotoFilePath = path
                         }
