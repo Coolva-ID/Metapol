@@ -56,10 +56,10 @@
                         android:layout_marginTop="8dp"
                         android:fontFamily="@font/poppins_medium"
                         android:includeFontPadding="false"
-                        tools:text="STATUS: MENUNGGU JADWAL"
                         android:textAllCaps="true"
                         android:textColor="@color/red_brand"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        tools:text="STATUS: MENUNGGU JADWAL" />
                 </LinearLayout>
 
                 <ImageView
@@ -73,64 +73,17 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.card.MaterialCardView
-            style="@style/Widget.Material3.CardView.Filled"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_escort_req"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="@color/white"
-            android:clickable="true"
-            android:visibility="gone"
+            android:layout_marginBottom="8dp"
+            android:nestedScrollingEnabled="false"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/card_sim_reg">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:id="@+id/tv_service_2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_medium"
-                        android:includeFontPadding="false"
-                        android:text="Permohonan Pengawalan"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_stats_service_2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:fontFamily="@font/poppins_medium"
-                        android:includeFontPadding="false"
-                        android:text="STATUS: MENUNGGU VERIFIKASI"
-                        android:textAllCaps="true"
-                        android:textColor="@color/red_brand"
-                        android:textSize="16sp" />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_arrow"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/yellow_brand" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.card.MaterialCardView>
+            app:layout_constraintTop_toBottomOf="@+id/card_sim_reg"
+            tools:listitem="@layout/item_history_process" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

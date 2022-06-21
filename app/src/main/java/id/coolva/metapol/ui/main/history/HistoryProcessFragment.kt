@@ -6,9 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import id.coolva.metapol.R
 import id.coolva.metapol.databinding.FragmentHistoryProcessBinding
+import id.coolva.metapol.ui.form.escortreq.EscortReqAdapter
+import id.coolva.metapol.ui.form.escortreq.EscortReqViewModel
 import id.coolva.metapol.ui.form.simreg.SimRegViewModel
 
 @AndroidEntryPoint
@@ -18,6 +21,8 @@ class HistoryProcessFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val simRegViewModel: SimRegViewModel by viewModels()
+    private val escortReqViewModel: EscortReqViewModel by viewModels()
+    private lateinit var escortReqAdapter: EscortReqAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,8 +36,19 @@ class HistoryProcessFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // setup Adapter and Recycler View for Escort Request Data
+        escortReqAdapter = EscortReqAdapter()
+        binding.rvEscortReq.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            setHasFixedSize(true)
+            adapter = escortReqAdapter
+        }
+
         observeSimRegData()
+
+        observeEscortRequestData()
     }
+
 
     private fun observeSimRegData() {
         simRegViewModel.getSIMRegistration().observe(viewLifecycleOwner){
@@ -44,6 +60,15 @@ class HistoryProcessFragment : Fragment() {
                         tvSimRegStats.text = "Status: " + simReg.status
                     }
                 }
+            }
+        }
+    }
+
+    private fun observeEscortRequestData() {
+        escortReqViewModel.getEscortRequestList().observe(viewLifecycleOwner){ list ->
+            if (list != null){
+                escortReqAdapter.setData(list)
+                escortReqAdapter.notifyDataSetChanged()
             }
         }
     }

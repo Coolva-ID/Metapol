@@ -15,9 +15,12 @@
         <!-- Customize your theme here. -->
         <item name="android:fontFamily">@font/poppins</item>
     </style>
+
     <style name="ThemeGray" parent="Theme.Metapol">
         <item name="android:statusBarColor" tools:targetApi="l">#F6F9FC</item>
     </style>
+
+
     <style name="WithActionBar" parent="Theme.Material3.DayNight">
         <item name="colorPrimary">@color/yellow_brand</item>
         <item name="colorPrimaryVariant">@color/white</item>
@@ -46,5 +49,11 @@
     <style name="TabLayoutTextStyle">
         <item name="android:textSize">20sp</item>
         <item name="android:fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="CustomTextInputLayout">
+        <item name="android:layout_height">56dp</item>
+        <item name="android:background">@drawable/outlined_rectangle</item>
+        <item name="android:minWidth">56dp</item>
     </style>
 </resources>

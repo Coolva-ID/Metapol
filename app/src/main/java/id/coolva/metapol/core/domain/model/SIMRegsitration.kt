@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class SIMRegsitration(
 
-    val id: Int = 0,
+    val simRegId: Int = 0,
     val golonganSIM: String,
     val memilikiSertMengemudi: Boolean,
     val ttdPhotoPath: String,

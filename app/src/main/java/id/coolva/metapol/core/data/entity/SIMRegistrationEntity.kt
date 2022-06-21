@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class SIMRegistrationEntity (
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    val simRegId: Int = 0,
     val golonganSIM: String,
     val memilikiSertMengemudi: Boolean,
     val ttdPhotoPath: String,

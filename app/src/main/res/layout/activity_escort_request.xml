@@ -26,36 +26,45 @@
                 android:id="@+id/edt_keperluan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="17dp"
-                android:inputType="none" />
+                android:inputType="none"
+                android:padding="17dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/til_tanggal"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            style="@style/CustomTextInputLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Tanggal"
-            android:labelFor="@id/edt_tanggal"
+            android:background="@drawable/outlined_rectangle"
+            android:clickable="true"
+            android:focusable="true"
             android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/til_keperluan">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/til_keperluan"
+            app:layout_constraintStart_toStartOf="parent">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <TextView
                 android:id="@+id/edt_tanggal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:text="Tanggal"
+                android:textSize="16sp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_jam"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:hint="Jam"
             android:labelFor="@id/edt_jam"
-            android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/til_tanggal">
 
@@ -72,8 +81,8 @@
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Titik Keberangkatan"
             android:layout_marginTop="16dp"
+            android:hint="Titik Keberangkatan"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/til_jam">
 
@@ -89,8 +98,8 @@
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Titik Akhir"
             android:layout_marginTop="16dp"
+            android:hint="Titik Akhir"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/til_titik_keberangkatan">
 
@@ -106,8 +115,8 @@
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Jumlah Kendaraan yang dikawal"
             android:layout_marginTop="16dp"
+            android:hint="Jumlah Kendaraan yang dikawal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/til_titik_akhir">
 
@@ -122,9 +131,9 @@
             android:id="@+id/tv_pengawalan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
             android:text="Kendaraan Pengawal Polisi"
             android:textSize="18sp"
-            android:layout_marginTop="24dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/til_jumlah_kendaran_yang_dikawal"
@@ -155,8 +164,8 @@
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Jumlah Kendaraan Pengawal"
             android:layout_marginTop="16dp"
+            android:hint="Jumlah Kendaraan Pengawal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/til_jenis_kendaraan">
 
@@ -171,12 +180,12 @@
             android:id="@+id/btn_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="18dp"
-            android:text="Ajukan Pendaftaran"
             android:layout_marginTop="25dp"
+            android:padding="18dp"
+            android:text="Ajukan Permohonan"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/til_jumlah_kendaran_pengawal"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/til_jumlah_kendaran_pengawal" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

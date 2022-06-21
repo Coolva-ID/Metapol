@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView style="@style/Widget.Material3.CardView.Filled"
+    android:backgroundTint="@color/white"
+    android:clickable="true"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:layout_width="match_parent"
+    android:visibility="visible"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/card_sim_reg"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:fontFamily="@font/poppins_medium"
+                android:id="@+id/tv_service_title"
+                android:includeFontPadding="false"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                tools:text="Permohonan Pengawalan"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:fontFamily="@font/poppins_medium"
+                android:id="@+id/tv_service_status"
+                android:includeFontPadding="false"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_width="wrap_content"
+                tools:text="STATUS: MENUNGGU VERIFIKASI"
+                android:textAllCaps="true"
+                android:textColor="@color/red_brand"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_height="30dp"
+            android:layout_width="30dp"
+            android:src="@drawable/ic_arrow"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/yellow_brand" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -1,6 +1,8 @@
 package id.coolva.metapol.core.data.source
 
+import id.coolva.metapol.core.data.entity.EscortReqEntity
 import id.coolva.metapol.core.data.source.local.LocalDataSource
+import id.coolva.metapol.core.domain.model.EscortReq
 import id.coolva.metapol.core.domain.model.SIMRegsitration
 import id.coolva.metapol.core.domain.repository.IMetapolRepository
 import id.coolva.metapol.utils.DataMapper
@@ -23,6 +25,21 @@ class MetapolRepository @Inject constructor(private val localDataSource: LocalDa
 
     override suspend fun deleteSIMReg() {
         localDataSource.deleteSIMReg()
+    }
+
+    override fun getEscortRequestList(): Flow<List<EscortReq>> {
+        return localDataSource.getEscortRequestList()
+            .map { DataMapper.mapEscortReqEntityListToDomain(it) }
+    }
+
+    override suspend fun insertEscortReq(escortReq: EscortReq) {
+        localDataSource.insertEscortReq(
+            DataMapper.mapEscortReqToEntity(escortReq)
+        )
+    }
+
+    override suspend fun deleteAllEscortReq() {
+        localDataSource.deleteAllEscortReq()
     }
 
 }

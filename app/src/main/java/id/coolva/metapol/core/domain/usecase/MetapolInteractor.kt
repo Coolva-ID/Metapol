@@ -1,5 +1,6 @@
 package id.coolva.metapol.core.domain.usecase
 
+import id.coolva.metapol.core.domain.model.EscortReq
 import id.coolva.metapol.core.domain.model.SIMRegsitration
 import id.coolva.metapol.core.domain.repository.IMetapolRepository
 import kotlinx.coroutines.flow.Flow
@@ -16,5 +17,17 @@ class MetapolInteractor @Inject constructor(private val repository: IMetapolRepo
 
     override suspend fun deleteSIMReg() {
         repository.deleteSIMReg()
+    }
+
+    override fun getEscortRequestList(): Flow<List<EscortReq>> {
+        return repository.getEscortRequestList()
+    }
+
+    override suspend fun insertEscortReq(escortReq: EscortReq) {
+        repository.insertEscortReq(escortReq)
+    }
+
+    override suspend fun deleteAllEscortReq() {
+        repository.deleteAllEscortReq()
     }
 }
