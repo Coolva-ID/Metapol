@@ -1,16 +1,15 @@
-package id.coolva.metapol.ui.main.form
+package id.coolva.metapol.ui.form.escortreq
 
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import id.coolva.metapol.R
-import id.coolva.metapol.databinding.ActivityPengawalanBinding
+import androidx.appcompat.app.AppCompatActivity
+import id.coolva.metapol.databinding.ActivityEscortRequestBinding
 
-class Pengawalan : AppCompatActivity() {
-    private lateinit var binding: ActivityPengawalanBinding
+class EscortRequestActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityEscortRequestBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityPengawalanBinding.inflate(layoutInflater)
+        binding = ActivityEscortRequestBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val actionBar = supportActionBar
         actionBar!!.title = "Permohonan Pengawalan"

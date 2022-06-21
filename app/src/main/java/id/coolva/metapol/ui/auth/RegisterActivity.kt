@@ -1,4 +1,4 @@
-package id.coolva.metapol.ui.main.auth
+package id.coolva.metapol.ui.auth
 
 import android.content.DialogInterface
 import android.content.Intent
@@ -7,29 +7,32 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import id.coolva.metapol.databinding.ActivityLoginBinding
+import id.coolva.metapol.R
+import id.coolva.metapol.databinding.ActivityRegisterBinding
 import id.coolva.metapol.ui.main.MainActivity
 
-class LoginActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityLoginBinding
+class RegisterActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityRegisterBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(R.layout.activity_register)
+
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
-        binding.btnLogin.setOnClickListener(object: View.OnClickListener {
+        binding.btnRegister.setOnClickListener(object: View.OnClickListener {
             override fun onClick(p0: View?) {
-                val moveToMain = Intent(this@LoginActivity, MainActivity::class.java)
-                startActivity(moveToMain)
+                val moveToMainActivity = Intent(this@RegisterActivity, MainActivity::class.java)
+                startActivity(moveToMainActivity)
                 finish()
             }
         })
 
-        binding.btnRegisterInLogin.setOnClickListener(object: View.OnClickListener {
+        binding.btnLoginInRegister.setOnClickListener(object: View.OnClickListener {
             override fun onClick(p0: View?) {
-                val moveToLogin = Intent(this@LoginActivity, RegisterActivity::class.java)
-                startActivity(moveToLogin)
+                val moveToLoginActivity = Intent(this@RegisterActivity, LoginActivity::class.java)
+                startActivity(moveToLoginActivity)
                 finish()
             }
         })
@@ -50,7 +53,7 @@ class LoginActivity : AppCompatActivity() {
                     dialogInterface.cancel()
                 })
 
-            val alertDialog:AlertDialog = builder.create()
+            val alertDialog: AlertDialog = builder.create()
             alertDialog.show()
         }
 

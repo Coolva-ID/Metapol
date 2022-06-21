@@ -1,4 +1,4 @@
-package id.coolva.metapol.ui.main.form
+package id.coolva.metapol.ui.form.simreg
 
 import android.Manifest
 import android.content.Intent
@@ -15,14 +15,14 @@ import androidx.activity.result.contract.ActivityResultContracts.StartActivityFo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import id.coolva.metapol.R
-import id.coolva.metapol.databinding.ActivityDaftarSimBinding
+import id.coolva.metapol.databinding.ActivitySimRegistrationBinding
 import java.io.File
 
 
-class DaftarSIM : AppCompatActivity() {
+class SIMRegActivity : AppCompatActivity() {
 
     private val binding by lazy {
-        ActivityDaftarSimBinding.inflate(layoutInflater)
+        ActivitySimRegistrationBinding.inflate(layoutInflater)
     }
 
     private var fileSelected = ""
@@ -123,12 +123,12 @@ class DaftarSIM : AppCompatActivity() {
                 }
 
                 if (ttdPhotoValue.isEmpty()){
-                    Toast.makeText(this@DaftarSIM, "Anda belum menambahkan Photo TTD", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@SIMRegActivity, "Anda belum menambahkan Photo TTD", Toast.LENGTH_SHORT).show()
                     isNotEmpty = false
                 }
 
                 if (pasPhotoValue.isEmpty()){
-                    Toast.makeText(this@DaftarSIM, "Anda belum menambahkan Pas Photo", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@SIMRegActivity, "Anda belum menambahkan Pas Photo", Toast.LENGTH_SHORT).show()
                     isNotEmpty = false
                 }
 
