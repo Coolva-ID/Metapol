@@ -8,4 +8,6 @@ interface IMetapolRepository {
     fun getSIMRegistration(): Flow<List<SIMRegsitration>>
 
     suspend fun insertSIMRegistration(data: SIMRegsitration)
+
+    suspend fun deleteSIMReg()
 }

@@ -13,4 +13,8 @@ class MetapolInteractor @Inject constructor(private val repository: IMetapolRepo
     override suspend fun insertSIMRegistration(data: SIMRegsitration) {
         repository.insertSIMRegistration(data)
     }
+
+    override suspend fun deleteSIMReg() {
+        repository.deleteSIMReg()
+    }
 }

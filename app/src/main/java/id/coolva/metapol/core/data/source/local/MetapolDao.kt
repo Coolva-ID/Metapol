@@ -14,4 +14,7 @@ interface MetapolDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSIMRegistration(simRegistrationEntity: SIMRegistrationEntity)
+
+    @Query("DELETE FROM sim_registration")
+    suspend fun deleteSIMReg()
 }

@@ -23,4 +23,10 @@ class SimRegViewModel @Inject constructor(private val metapolUseCase: MetapolUse
             metapolUseCase.insertSIMRegistration(simRegsitration)
         }
     }
+
+    fun deleteSIMReg(){
+        viewModelScope.launch {
+            metapolUseCase.deleteSIMReg()
+        }
+    }
 }

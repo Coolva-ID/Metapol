@@ -20,4 +20,9 @@ class MetapolRepository @Inject constructor(private val localDataSource: LocalDa
             DataMapper.mapSIMRegToEntity(data)
         )
     }
+
+    override suspend fun deleteSIMReg() {
+        localDataSource.deleteSIMReg()
+    }
+
 }

@@ -9,4 +9,6 @@ class LocalDataSource @Inject constructor(private val dao: MetapolDao) {
     fun getSIMRegistration(): Flow<List<SIMRegistrationEntity>> = dao.getSIMRegistration()
 
     suspend fun insertSIMRegistration(data: SIMRegistrationEntity) = dao.insertSIMRegistration(data)
+
+    suspend fun deleteSIMReg() = dao.deleteSIMReg()
 }

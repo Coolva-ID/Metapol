@@ -46,6 +46,16 @@ class HomeFragment : Fragment() {
             startActivity(Intent(requireContext(), EscortRequestActivity::class.java))
         }
 
+        binding.btnClearData.setOnClickListener {
+            simRegViewModel.getSIMRegistration().observe(viewLifecycleOwner){
+                if (it.isNotEmpty() && it != null){
+                    simRegViewModel.deleteSIMReg()
+                    Toast.makeText(requireContext(), "Duh keapus cok", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(requireContext(), "awww", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     override fun onDestroy() {
