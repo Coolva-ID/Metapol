@@ -22,7 +22,10 @@
     <string-array name="sert_mengemudi">
         <item>Ada</item>
         <item>Tidak</item>
-
     </string-array>
 
+    <string-array name="kendaraan_polisi">
+        <item>Motor</item>
+        <item>Mobil</item>
+    </string-array>
 </resources>

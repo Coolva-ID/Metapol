@@ -13,8 +13,8 @@
         android:padding="16dp">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_kepeluan"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+            android:id="@+id/til_keperluan"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Untuk Keperluan"
@@ -22,8 +22,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <AutoCompleteTextView
-                android:id="@+id/act_keperluan"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_keperluan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="17dp"
@@ -36,25 +36,148 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Tanggal"
+            android:labelFor="@id/edt_tanggal"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/til_kepeluan">
+            app:layout_constraintTop_toBottomOf="@id/til_keperluan">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_tanggal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="date" />
+                android:inputType="none" />
         </com.google.android.material.textfield.TextInputLayout>
-    <DatePicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/til_tanggal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_jam"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Jam"
+            android:labelFor="@id/edt_jam"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/til_tanggal">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_jam"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_titik_keberangkatan"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Titik Keberangkatan"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/til_jam">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_titik_keberangkatan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_titik_akhir"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Titik Akhir"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/til_titik_keberangkatan">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_titik_akhir"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_jumlah_kendaran_yang_dikawal"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Jumlah Kendaraan yang dikawal"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/til_titik_akhir">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_jumlah_kendaran_yang_dikawal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tv_pengawalan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kendaraan Pengawal Polisi"
+            android:textSize="18sp"
+            android:layout_marginTop="24dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/til_jumlah_kendaran_yang_dikawal"
+            tools:layout_editor_absoluteX="16dp" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_jenis_kendaraan"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Jenis Kendaraan Pengawal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_pengawalan">
+
+            <AutoCompleteTextView
+                android:id="@+id/act_jenis_kendaraan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:padding="17dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_jumlah_kendaran_pengawal"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Jumlah Kendaraan Pengawal"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/til_jenis_kendaraan">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_jumlah_kendaran_pengawal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="18dp"
+            android:text="Ajukan Pendaftaran"
+            android:layout_marginTop="25dp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/til_jumlah_kendaran_pengawal"
+            app:layout_constraintStart_toStartOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 </ScrollView>
