@@ -105,7 +105,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_input_kk"
+            android:id="@+id/layout_input_kartu_keluarga"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/layout_input_akte"
@@ -114,20 +114,20 @@
             app:layout_constraintEnd_toEndOf="parent">
 
             <TextView
-                android:id="@+id/tv_kk"
+                android:id="@+id/tv_kartu_keluarga"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Foto Kartu Keluarga"
                 android:textSize="16sp"
                 android:layout_marginEnd="8dp"
                 android:fontFamily="@font/poppins_medium"
-                app:layout_constraintEnd_toStartOf="@id/btn_upload_kk"
+                app:layout_constraintEnd_toStartOf="@id/btn_upload_kartu_keluarga"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:layout_editor_absoluteX="16dp" />
 
             <TextView
-                android:id="@+id/tv_kk_path"
+                android:id="@+id/tv_kartu_keluarga_path"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -135,12 +135,12 @@
                 android:textSize="14sp"
                 android:maxLines="1"
                 android:ellipsize="end"
-                app:layout_constraintEnd_toStartOf="@id/btn_upload_kk"
+                app:layout_constraintEnd_toStartOf="@id/btn_upload_kartu_keluarga"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_kk"/>
+                app:layout_constraintTop_toBottomOf="@id/tv_kartu_keluarga"/>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_upload_kk"
+                android:id="@+id/btn_upload_kartu_keluarga"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/red_brand"
@@ -157,7 +157,7 @@
             android:id="@+id/layout_input_pas_photo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/layout_input_kk"
+            app:layout_constraintTop_toBottomOf="@id/layout_input_kartu_keluarga"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">

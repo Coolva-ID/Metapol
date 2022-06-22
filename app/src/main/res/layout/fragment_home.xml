@@ -4,24 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scrollbars="none"
-    tools:context=".ui.main.home.HomeFragment"
-    android:paddingTop="16dp"
-    android:paddingRight="16dp"
-    android:paddingLeft="16dp"
     android:background="@color/gray"
-    android:paddingBottom="86dp">
+    android:scrollbars="none"
+    tools:context=".ui.main.home.HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="16dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/profile_tab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
@@ -36,27 +33,28 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/profile_image"
+                android:layout_marginLeft="15dp"
+                android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="@id/profile_image"
                 app:layout_constraintStart_toEndOf="@id/profile_image"
-                android:layout_marginLeft="15dp"
-                android:orientation="horizontal">
+                app:layout_constraintTop_toTopOf="@id/profile_image">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:elegantTextHeight="true"
-                    android:text="Jamal Akhyer"
-                    android:textSize="20sp"
                     android:fontFamily="@font/poppins_semibold"
                     android:includeFontPadding="false"
-                    android:textColor="@color/black"/>
+                    android:text="Jamal Akhyer"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_verified"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="8dp"/>
+                    android:layout_marginLeft="8dp"
+                    android:src="@drawable/ic_verified" />
 
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -68,23 +66,23 @@
             android:backgroundTint="@color/red_brand"
             android:padding="8dp"
             android:text="JGN TEKAN AKU!"
-            android:textStyle="bold"
             android:textColor="@color/white"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_sim"
-            app:cardCornerRadius="10dp"
-            app:cardBackgroundColor="@color/white"
-            android:layout_marginTop="24dp"
+            style="@style/Widget.Material3.CardView.Filled"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="24dp"
             android:clickable="true"
-            app:layout_constraintTop_toBottomOf="@id/profile_tab"
-            style="@style/Widget.Material3.CardView.Filled">
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profile_tab">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -94,12 +92,13 @@
                     android:layout_width="120dp"
                     android:layout_height="85dp"
                     android:src="@drawable/ic_card_circle_decoration"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
                 <TextView
-                    android:layout_marginLeft="16dp"
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
                     android:fontFamily="@font/poppins_semibold"
                     android:lineHeight="30dp"
                     android:text="Pendaftaran Ujian SIM"
@@ -111,92 +110,95 @@
 
 
                 <ImageView
-                    android:layout_marginVertical="16dp"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
-                    android:src="@drawable/ic_sim"
+                    android:layout_marginVertical="16dp"
                     android:layout_marginRight="16dp"
+                    android:src="@drawable/ic_sim"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_skck"
-            app:cardCornerRadius="10dp"
-            app:cardBackgroundColor="@color/white"
-            android:layout_marginTop="16dp"
+            style="@style/Widget.Material3.CardView.Filled"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp"
             android:clickable="true"
-            app:layout_constraintTop_toBottomOf="@id/card_sim"
-            style="@style/Widget.Material3.CardView.Filled">
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_sim">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-         >
+                android:layout_height="match_parent">
+
                 <ImageView
                     android:layout_width="120dp"
                     android:layout_height="85dp"
                     android:src="@drawable/ic_card_circle_decoration"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
                 <TextView
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
                     android:fontFamily="@font/poppins_semibold"
                     android:lineHeight="30dp"
                     android:text="Pendaftaran SKCK"
                     android:textColor="@color/black"
                     android:textSize="24sp"
-                    android:layout_marginLeft="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
 
                 <ImageView
-                    android:layout_marginVertical="16dp"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
-                    android:src="@drawable/ic_skck"
+                    android:layout_marginVertical="16dp"
                     android:layout_marginRight="16dp"
+                    android:src="@drawable/ic_skck"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_pengawalan"
-            app:cardCornerRadius="10dp"
-            app:cardBackgroundColor="@color/white"
-            android:layout_marginTop="16dp"
+            style="@style/Widget.Material3.CardView.Filled"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp"
             android:clickable="true"
-            app:layout_constraintTop_toBottomOf="@id/card_skck"
-            style="@style/Widget.Material3.CardView.Filled">
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_skck">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <ImageView
                     android:layout_width="120dp"
                     android:layout_height="85dp"
                     android:src="@drawable/ic_card_circle_decoration"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
                 <TextView
-                    android:layout_marginLeft="16dp"
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
                     android:fontFamily="@font/poppins_semibold"
                     android:lineHeight="30dp"
                     android:text="Permohonan Pengawalan"
@@ -208,18 +210,16 @@
 
 
                 <ImageView
-                    android:layout_marginVertical="16dp"
-                    android:layout_marginRight="16dp"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
+                    android:layout_marginVertical="16dp"
+                    android:layout_marginRight="16dp"
                     android:src="@drawable/ic_escort"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
-
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import id.coolva.metapol.R
 import id.coolva.metapol.databinding.FragmentHistoryProcessBinding
 import id.coolva.metapol.ui.form.escortreq.EscortReqAdapter
 import id.coolva.metapol.ui.form.escortreq.EscortReqViewModel
 import id.coolva.metapol.ui.form.simreg.SimRegViewModel
+import id.coolva.metapol.ui.form.skckreg.SkckRegViewModel
 
 @AndroidEntryPoint
 class HistoryProcessFragment : Fragment() {
@@ -21,6 +21,7 @@ class HistoryProcessFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val simRegViewModel: SimRegViewModel by viewModels()
+    private val skckRegViewModel: SkckRegViewModel by viewModels()
     private val escortReqViewModel: EscortReqViewModel by viewModels()
     private lateinit var escortReqAdapter: EscortReqAdapter
 
@@ -45,7 +46,7 @@ class HistoryProcessFragment : Fragment() {
         }
 
         observeSimRegData()
-
+        observeSkckRegData()
         observeEscortRequestData()
     }
 
@@ -58,6 +59,20 @@ class HistoryProcessFragment : Fragment() {
                     binding.apply {
                         cardSimReg.visibility = View.VISIBLE
                         tvSimRegStats.text = "Status: " + simReg.status
+                    }
+                }
+            }
+        }
+    }
+
+    private fun observeSkckRegData(){
+        skckRegViewModel.getSKCKRegList().observe(viewLifecycleOwner){
+            if (it.isNotEmpty() && it != null){
+                val skckReg = it[0]
+                if (skckReg != null){
+                    binding.apply {
+                        cardSkckReg.visibility = View.VISIBLE
+                        tvSkckRegStats.text = "Status: " + skckReg.status
                     }
                 }
             }

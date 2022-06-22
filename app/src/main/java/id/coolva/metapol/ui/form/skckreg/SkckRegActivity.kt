@@ -63,7 +63,7 @@ class SkckRegActivity : AppCompatActivity() {
             }
         }
 
-        binding.btnUploadKk.setOnClickListener {
+        binding.btnUploadKartuKeluarga.setOnClickListener {
             if (allowedReadExternalStorage(this)) {
                 selectPDF()
                 this.selectedInput = KARTU_KELUARGA
@@ -106,14 +106,13 @@ class SkckRegActivity : AppCompatActivity() {
                             KTP -> {
                                 binding.tvKtpPath.text = file.name
                                 this.ktpPath = path
-
                             }
                             AKTE_LAHIR -> {
                                 binding.tvAktePath.text = file.name
                                 this.akteLahirPath = path
                             }
                             KARTU_KELUARGA -> {
-                                binding.tvKtpPath.text = file.name
+                                binding.tvKartuKeluargaPath.text = file.name
                                 this.kartuKeluargaPath = path
                             }
                             PAS_PHOTO -> {
@@ -143,7 +142,7 @@ class SkckRegActivity : AppCompatActivity() {
     private fun submitData() {
         var inputValid = true
         binding.apply {
-            if (ktpPath.isEmpty() && akteLahirPath.isEmpty() && kartuKeluargaPath.isEmpty() && pasPhotoPath.isEmpty()) {
+            if (ktpPath.isEmpty() || akteLahirPath.isEmpty() || kartuKeluargaPath.isEmpty() || pasPhotoPath.isEmpty()) {
                 inputValid = false
             }
 
