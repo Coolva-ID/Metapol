@@ -94,7 +94,6 @@ object DataMapper {
             data.identityCardPhotoPath,
             data.aktePhotoPath,
             data.kkPhotoPath,
-            data.sidikJariPhotoPath,
             data.pasPhotoPath,
             data.status
         )
@@ -110,7 +109,6 @@ object DataMapper {
             data.identityCardPhotoPath,
             data.aktePhotoPath,
             data.kkPhotoPath,
-            data.sidikJariPhotoPath,
             data.pasPhotoPath,
             data.status
         )

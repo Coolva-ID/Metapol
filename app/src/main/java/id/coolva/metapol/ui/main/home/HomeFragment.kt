@@ -13,6 +13,8 @@ import id.coolva.metapol.databinding.FragmentHomeBinding
 import id.coolva.metapol.ui.form.simreg.SIMRegActivity
 import id.coolva.metapol.ui.form.escortreq.EscortRequestActivity
 import id.coolva.metapol.ui.form.simreg.SimRegViewModel
+import id.coolva.metapol.ui.form.skckreg.SkckRegActivity
+import id.coolva.metapol.ui.form.skckreg.SkckRegViewModel
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -20,6 +22,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val simRegViewModel: SimRegViewModel by viewModels()
+    private val skckRegViewModel: SkckRegViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,12 +35,23 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.cardSim.setOnClickListener {
             simRegViewModel.getSIMRegistration().observe(viewLifecycleOwner){
                 if (it.isNotEmpty() && it != null){
-                    Toast.makeText(requireContext(), "Pendaftaran Ujian SIM anda dalam Proses.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Pendaftaran Ujian SIM anda dalam proses.", Toast.LENGTH_SHORT).show()
                 } else {
                     startActivity(Intent(requireContext(), SIMRegActivity::class.java))
+                }
+            }
+        }
+
+        binding.cardSkck.setOnClickListener {
+            skckRegViewModel.getSKCKRegList().observe(viewLifecycleOwner){
+                if (it.isNotEmpty() && it != null){
+                    Toast.makeText(requireContext(), "Pendaftaran SKCK anda dalam proses.", Toast.LENGTH_SHORT).show()
+                } else {
+            startActivity(Intent(requireContext(), SkckRegActivity::class.java))
                 }
             }
         }

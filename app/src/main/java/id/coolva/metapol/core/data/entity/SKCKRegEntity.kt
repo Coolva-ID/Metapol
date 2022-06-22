@@ -13,7 +13,6 @@ data class SKCKRegEntity(
     val identityCardPhotoPath: String,
     val aktePhotoPath: String,
     val kkPhotoPath: String,
-    val sidikJariPhotoPath: String,
     val pasPhotoPath: String,
     var status: String
 ) : Parcelable
