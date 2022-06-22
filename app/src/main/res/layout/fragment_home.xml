@@ -21,7 +21,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_image"
+                android:id="@+id/iv_user_profile_image"
                 android:layout_width="46dp"
                 android:layout_height="46dp"
                 android:clickable="true"
@@ -30,33 +30,36 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/tv_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="@id/profile_image"
-                app:layout_constraintStart_toEndOf="@id/profile_image"
-                app:layout_constraintTop_toTopOf="@id/profile_image">
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:elegantTextHeight="true"
+                android:ellipsize="end"
+                android:fontFamily="@font/poppins_semibold"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:maxLength="20"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_user_profile_image"
+                app:layout_constraintEnd_toStartOf="@+id/iv_verified_logo"
+                app:layout_constraintStart_toEndOf="@id/iv_user_profile_image"
+                app:layout_constraintTop_toTopOf="@id/iv_user_profile_image"
+                tools:text="Jamal Akhyer" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:elegantTextHeight="true"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:includeFontPadding="false"
-                    android:text="Jamal Akhyer"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="8dp"
-                    android:src="@drawable/ic_verified" />
-
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/iv_verified_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_verified"
+                app:layout_constraintBottom_toBottomOf="@id/tv_user_name"
+                app:layout_constraintStart_toEndOf="@id/tv_user_name"
+                app:layout_constraintTop_toTopOf="@id/tv_user_name" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.button.MaterialButton
@@ -68,6 +71,7 @@
             android:text="JGN TEKAN AKU!"
             android:textColor="@color/white"
             android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -11,8 +11,8 @@ object DummyData {
                 name = "Jamal Akhyer",
                 email = "alif.akbarkartadinata2049@students.unila.ac.id",
                 password = "uvuvwevwevwe",
-                phoneNumber = "",
-                profilePhoto = "".toByteArray()
+                phoneNumber = null,
+                profilePhoto = null
             )
         )
 
@@ -22,10 +22,9 @@ object DummyData {
                 email = "muhammadwafa105@gmail.com",
                 password = "passwordmetapol",
                 phoneNumber = "081271306749",
-                profilePhoto = "".toByteArray()
+                profilePhoto = null
             )
         )
-
 
         return userList
     }

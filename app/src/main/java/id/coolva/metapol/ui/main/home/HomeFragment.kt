@@ -2,6 +2,7 @@ package id.coolva.metapol.ui.main.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,14 +16,20 @@ import id.coolva.metapol.ui.form.escortreq.EscortRequestActivity
 import id.coolva.metapol.ui.form.simreg.SimRegViewModel
 import id.coolva.metapol.ui.form.skckreg.SkckRegActivity
 import id.coolva.metapol.ui.form.skckreg.SkckRegViewModel
+import id.coolva.metapol.ui.main.MainActivity
+import id.coolva.metapol.utils.Constants
+import id.coolva.metapol.utils.Preferences
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
+
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
     private val simRegViewModel: SimRegViewModel by viewModels()
     private val skckRegViewModel: SkckRegViewModel by viewModels()
+
+    private lateinit var preferences: Preferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +42,15 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // setup preference
+        preferences = Preferences(requireContext())
+
+        binding.apply {
+            val name = preferences.getValues(Constants.USER_NAME) ?: "User"
+            Log.e("HomeFragment: ", name.toString())
+            tvUserName.text = name
+        }
 
         binding.cardSim.setOnClickListener {
             simRegViewModel.getSIMRegistration().observe(viewLifecycleOwner){

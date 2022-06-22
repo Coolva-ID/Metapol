@@ -14,6 +14,8 @@ import id.coolva.metapol.core.domain.model.User
 import id.coolva.metapol.databinding.ActivityLoginBinding
 import id.coolva.metapol.ui.main.MainActivity
 import id.coolva.metapol.ui.main.profile.UserViewModel
+import id.coolva.metapol.utils.Constants
+import id.coolva.metapol.utils.Constants.Companion.USER_NAME
 import id.coolva.metapol.utils.DummyData
 import id.coolva.metapol.utils.Preferences
 
@@ -35,7 +37,7 @@ class LoginActivity : AppCompatActivity() {
         preferences = Preferences(this)
         
         // check if user already login, then intent to MainActivity
-        if (preferences.getValues("loginStatus").equals("1")){
+        if (preferences.getValues(Constants.USER_LOGIN_STATUS).equals("1")){
             finishAffinity()
 
             val moveToMain = Intent(this@LoginActivity, MainActivity::class.java)
@@ -98,18 +100,15 @@ class LoginActivity : AppCompatActivity() {
     private fun loginVerification(inputEmail: String, inputPassword: String) {
 
         val user: User? = getUser(inputEmail)
-        Log.e("LoginActivity: ", user.toString())
-        Log.e("LoginActivity: ", user?.password.toString())
-        Log.e("LoginActivity: ", inputPassword)
-        Log.e("LoginActivity: ", (user?.password == inputPassword).toString())
 
         if (user != null){
             if (user.password == inputPassword){
                 // if input valid, save data and intent to Main Activity
-                preferences.setValues("name", user.name)
-                preferences.setValues("email", user.email)
-                preferences.setValues("phoneNumber", user.phoneNumber)
-                preferences.setValues("loginStatus", "1") // if equal to 1, that means user is logged in
+                preferences.setValues(USER_NAME, user.name)
+                preferences.setValues(Constants.USER_EMAIL, user.email)
+                preferences.setValues(Constants.USER_PHONE_NUMBER, user.phoneNumber)
+//                preferences.setValues(Constants.USER_PHOTO_PATH, user.profilePhoto)
+                preferences.setValues(Constants.USER_LOGIN_STATUS, "1") // if equal to 1, that means user is logged in
 
                 val moveToMain = Intent(this@LoginActivity, MainActivity::class.java)
                 startActivity(moveToMain)
