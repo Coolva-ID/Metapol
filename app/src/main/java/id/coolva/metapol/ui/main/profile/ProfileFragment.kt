@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.firebase.auth.FirebaseAuth
 import id.coolva.metapol.R
 import id.coolva.metapol.databinding.FragmentHomeBinding
 import id.coolva.metapol.databinding.FragmentProfileBinding
@@ -35,17 +36,23 @@ class ProfileFragment : Fragment() {
         // setup preference
         preferences = Preferences(requireContext())
 
-        binding.btnLogin.setOnClickListener {
-            // reset data
-            preferences.setValues(Constants.USER_NAME, null)
-            preferences.setValues(Constants.USER_EMAIL, null)
-            preferences.setValues(Constants.USER_PHONE_NUMBER, null)
-//                preferences.setValues(Constants.USER_PHOTO_PATH, user.profilePhoto)
-            preferences.setValues(Constants.USER_LOGIN_STATUS, "0") // if equal to 1, that means user is logged in
+//        binding.btnLogout.setOnClickListener {
+//            // reset data
+//            preferences.setValues(Constants.USER_NAME, null)
+//            preferences.setValues(Constants.USER_EMAIL, null)
+//            preferences.setValues(Constants.USER_PHONE_NUMBER, null)
+////                preferences.setValues(Constants.USER_PHOTO_PATH, user.profilePhoto)
+//            preferences.setValues(Constants.USER_LOGIN_STATUS, "0") // if equal to 1, that means user is logged in
+//
+//            val moveToMain = Intent(requireContext(), LoginActivity::class.java)
+//            startActivity(moveToMain)
+//            activity?.finish()
+//        }
 
-            val moveToMain = Intent(requireContext(), LoginActivity::class.java)
-            startActivity(moveToMain)
-            activity?.finish()
+        binding.btnLogout.setOnClickListener{
+            FirebaseAuth.getInstance().signOut()
+
+            startActivity(Intent(requireContext(), LoginActivity::class.java))
         }
     }
 
