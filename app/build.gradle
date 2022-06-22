@@ -6,7 +6,7 @@ plugins {
     id 'kotlin-android'
     id 'dagger.hilt.android.plugin'
 }
-
+apply plugin: 'com.google.gms.google-services'
 android {
     compileSdk 32
 
@@ -56,7 +56,15 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'com.github.bumptech.glide:glide:4.4.0'
 
+    // firebase
+    implementation platform('com.google.firebase:firebase-bom:30.1.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-auth-ktx:21.0.1'
+    implementation 'com.google.firebase:firebase-storage-ktx'
+
+    implementation 'com.google.firebase:firebase-firestore-ktx'
     // Room
     implementation "androidx.room:room-runtime:$roomRuntimeVersion"
     kapt "androidx.room:room-compiler:$roomVersion"

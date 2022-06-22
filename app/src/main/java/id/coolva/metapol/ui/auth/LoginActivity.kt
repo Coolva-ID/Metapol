@@ -5,10 +5,15 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.AndroidEntryPoint
 import id.coolva.metapol.core.domain.model.User
 import id.coolva.metapol.databinding.ActivityLoginBinding
@@ -35,17 +40,54 @@ class LoginActivity : AppCompatActivity() {
         preferences = Preferences(this)
         
         // check if user already login, then intent to MainActivity
-        if (preferences.getValues("loginStatus").equals("1")){
-            finishAffinity()
-
-            val moveToMain = Intent(this@LoginActivity, MainActivity::class.java)
-            startActivity(moveToMain)
-        }
+//        if (preferences.getValues("loginStatus").equals("1")){
+//            finishAffinity()
+//
+//            val moveToMain = Intent(this@LoginActivity, MainActivity::class.java)
+//            startActivity(moveToMain)
+//        }
         
-        observeUserList()
+//        observeUserList()
+
+//        binding.btnLogin.setOnClickListener {
+//            login()
+//        }
 
         binding.btnLogin.setOnClickListener {
-            login()
+            when {
+                TextUtils.isEmpty(binding.edtEmailLogin.text.toString().trim() {it <= ' '}) -> {
+                    binding.edtEmailLogin.error = "Anda belum memasukkan Email"
+                }
+                TextUtils.isEmpty(binding.edtPwLogin.text.toString().trim() {it <= ' '}) -> {
+                    binding.edtPwLogin.error = "Anda belum memasukkan Password"
+                }
+                else -> {
+                    val email:String = binding.edtEmailLogin.text.toString().trim() {it <= ' '}
+                    val password:String = binding.edtPwLogin.text.toString()
+
+                    FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(
+                            OnCompleteListener<AuthResult> { task ->
+                                if (task.isSuccessful) {
+                                    Toast.makeText(
+                                        this,
+                                        "Berhasil masuk!",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    val moveToMain = Intent(this, MainActivity::class.java)
+                                    startActivity(moveToMain)
+                                    finish()
+                                } else {
+                                    Toast.makeText(
+                                        this,
+                                        task.exception!!.message.toString(),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                        )
+                }
+            }
         }
 
         binding.btnRegisterInLogin.setOnClickListener {

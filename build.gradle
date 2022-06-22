@@ -1,6 +1,10 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    repositories {
+        mavenCentral()
+        google()  // Google's Maven repository
+    }
     ext {
         appCompatVersion = '1.4.2'
         materialVersion = '1.6.1'
@@ -23,6 +27,7 @@ buildscript {
 
         dependencies {
             classpath "com.google.dagger:hilt-android-gradle-plugin:$hiltVersion"
+            classpath 'com.google.gms:google-services:4.3.10'
         }
     }
 }
