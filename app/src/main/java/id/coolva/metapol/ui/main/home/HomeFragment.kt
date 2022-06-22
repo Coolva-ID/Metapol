@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
@@ -50,13 +51,21 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         var user: User? = null
+        // get profile photo uri from database
         db.collection("users").document(firebaseUser!!.uid)
             .get()
             .addOnSuccessListener { document ->
                 user = document.toObject(User::class.java)!!
-                Log.d("Name", user?.nama.toString())
+                Log.d("Name", user?.foto_profil.toString())
+                Log.d("Photo", user?.foto_profil.toString())
+                if (user!!.foto_profil.toString() != "") {
+                    Glide.with(requireContext())
+                        .load(user!!.foto_profil.toString())
+                        .into(binding.ivUserProfileImage)
+                }
                 binding.tvUserName.text = user?.nama.toString()
             }
+
 
 
 //        // setup preference
