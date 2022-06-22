@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1078000409292",
+    "project_id": "metapol",
+    "storage_bucket": "metapol.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1078000409292:android:1324c8cd73662091a18069",
+        "android_client_info": {
+          "package_name": "id.coolva.metapol"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1078000409292-gtg3d7iv2jr1a8486vua72mtdv5fhpua.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_PVkU_n-3G9UlcmCS76-TRpIFHq72QhU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1078000409292-gtg3d7iv2jr1a8486vua72mtdv5fhpua.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

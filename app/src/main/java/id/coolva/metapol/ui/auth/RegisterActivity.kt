@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
@@ -15,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
 import id.coolva.metapol.R
 import id.coolva.metapol.core.domain.model.User
 import id.coolva.metapol.databinding.ActivityRegisterBinding
@@ -109,6 +112,12 @@ class RegisterActivity : AppCompatActivity() {
                                             finish()
                                         }
 
+                                } else {
+                                    Toast.makeText(
+                                        this,
+                                        task.exception!!.message.toString(),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                             }
                         )
