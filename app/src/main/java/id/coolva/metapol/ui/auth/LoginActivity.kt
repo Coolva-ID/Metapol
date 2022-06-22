@@ -19,6 +19,8 @@ import id.coolva.metapol.core.domain.model.User
 import id.coolva.metapol.databinding.ActivityLoginBinding
 import id.coolva.metapol.ui.main.MainActivity
 import id.coolva.metapol.ui.main.profile.UserViewModel
+import id.coolva.metapol.utils.Constants
+import id.coolva.metapol.utils.Constants.Companion.USER_NAME
 import id.coolva.metapol.utils.DummyData
 import id.coolva.metapol.utils.Preferences
 
@@ -147,15 +149,16 @@ class LoginActivity : AppCompatActivity() {
 
         if (user != null){
             if (user.password == inputPassword){
-                // if input valid, save data and intent to Main Activity
-                preferences.setValues("name", user.name)
-                preferences.setValues("email", user.email)
-                preferences.setValues("phoneNumber", user.phoneNumber)
-                preferences.setValues("loginStatus", "1") // if equal to 1, that means user is logged in
-
-                val moveToMain = Intent(this@LoginActivity, MainActivity::class.java)
-                startActivity(moveToMain)
-                finish()
+//                // if input valid, save data and intent to Main Activity
+//                preferences.setValues(USER_NAME, user.name)
+//                preferences.setValues(Constants.USER_EMAIL, user.email)
+//                preferences.setValues(Constants.USER_PHONE_NUMBER, user.phoneNumber)
+////                preferences.setValues(Constants.USER_PHOTO_PATH, user.profilePhoto)
+//                preferences.setValues(Constants.USER_LOGIN_STATUS, "1") // if equal to 1, that means user is logged in
+//
+//                val moveToMain = Intent(this@LoginActivity, MainActivity::class.java)
+//                startActivity(moveToMain)
+//                finish()
             } else {
                 binding.edtPwLogin.error = "Password salah."
             }

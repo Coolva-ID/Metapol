@@ -13,6 +13,6 @@ data class UserEntity(
     var name: String,
     var email: String,
     var password: String,
-    var phoneNumber: String,
-    var profilePhoto: ByteArray,
+    var phoneNumber: String? = null,
+    var profilePhoto: ByteArray? = null,
 ): Parcelable

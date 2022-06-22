@@ -20,14 +20,23 @@ import id.coolva.metapol.databinding.FragmentHomeBinding
 import id.coolva.metapol.ui.form.simreg.SIMRegActivity
 import id.coolva.metapol.ui.form.escortreq.EscortRequestActivity
 import id.coolva.metapol.ui.form.simreg.SimRegViewModel
+import id.coolva.metapol.ui.form.skckreg.SkckRegActivity
+import id.coolva.metapol.ui.form.skckreg.SkckRegViewModel
+import id.coolva.metapol.ui.main.MainActivity
+import id.coolva.metapol.utils.Constants
+import id.coolva.metapol.utils.Preferences
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+
     private val simRegViewModel: SimRegViewModel by viewModels()
     val firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     val db = Firebase.firestore
+    private val skckRegViewModel: SkckRegViewModel by viewModels()
+
+    private lateinit var preferences: Preferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,12 +58,32 @@ class HomeFragment : Fragment() {
                 binding.tvUserName.text = user?.nama.toString()
             }
 
+
+//        // setup preference
+//        preferences = Preferences(requireContext())
+//
+//        binding.apply {
+//            val name = preferences.getValues(Constants.USER_NAME) ?: "User"
+//            Log.e("HomeFragment: ", name.toString())
+//            tvUserName.text = name
+//        }
+
         binding.cardSim.setOnClickListener {
             simRegViewModel.getSIMRegistration().observe(viewLifecycleOwner){
                 if (it.isNotEmpty() && it != null){
-                    Toast.makeText(requireContext(), "Pendaftaran Ujian SIM anda dalam Proses.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Pendaftaran Ujian SIM anda dalam proses.", Toast.LENGTH_SHORT).show()
                 } else {
                     startActivity(Intent(requireContext(), SIMRegActivity::class.java))
+                }
+            }
+        }
+
+        binding.cardSkck.setOnClickListener {
+            skckRegViewModel.getSKCKRegList().observe(viewLifecycleOwner){
+                if (it.isNotEmpty() && it != null){
+                    Toast.makeText(requireContext(), "Pendaftaran SKCK anda dalam proses.", Toast.LENGTH_SHORT).show()
+                } else {
+            startActivity(Intent(requireContext(), SkckRegActivity::class.java))
                 }
             }
         }

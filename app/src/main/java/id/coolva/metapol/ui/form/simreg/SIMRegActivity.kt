@@ -1,6 +1,8 @@
 package id.coolva.metapol.ui.form.simreg
 
 import android.Manifest
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.ColorDrawable
@@ -37,12 +39,12 @@ class SIMRegActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(binding.root)
+
         val actionBar = supportActionBar
         actionBar!!.title = "Pendaftaran Ujian SIM"
-        actionBar!!.setBackgroundDrawable(ColorDrawable(0xFFFFFFFF.toInt()))
-        actionBar!!.elevation = 0F
+        actionBar.setBackgroundDrawable(ColorDrawable(0xFFFFFFFF.toInt()))
+        actionBar.elevation = 0F
 
         // set Dropdown for Golongan SIM
         val golSim: Array<String> = resources.getStringArray(R.array.golongan_sim)
@@ -57,18 +59,8 @@ class SIMRegActivity : AppCompatActivity() {
         binding.actSertMengemudi.setAdapter(arrayAdapterSertSim)
 
         binding.btnUploadSignature.setOnClickListener {
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                // when permission is not granted
-                // request permission
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                    1
-                )
+            if (!allowedReadExternalStorage(this)){
+                requestReadExternalStorage(this)
             } else {
                 // when permission is granted
                 selectPDF()
@@ -77,18 +69,8 @@ class SIMRegActivity : AppCompatActivity() {
         }
 
         binding.btnUploadPasPhoto.setOnClickListener {
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                // when permission is not granted
-                // request permission
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                    1
-                )
+            if (!allowedReadExternalStorage(this)){
+                requestReadExternalStorage(this)
             } else {
                 // when permission is granted
                 selectPDF()
@@ -108,14 +90,6 @@ class SIMRegActivity : AppCompatActivity() {
                 val contactNameValue = edtContactName.text.toString()
                 val contactAddressValue = edtContactAddress.text.toString()
                 val contactPhoneValue = edtContactPhone.text.toString()
-
-                Log.e("Check form SIM:", golonganSimValue)
-                Log.e("Check form SIM:", sertMengemudiValue)
-                Log.e("Check form SIM:", ttdPhotoValue)
-                Log.e("Check form SIM:", pasPhotoValue)
-                Log.e("Check form SIM:", contactNameValue)
-                Log.e("Check form SIM:", contactAddressValue)
-                Log.e("Check form SIM:", contactPhoneValue)
 
                 /**
                  * CHECKING DATA FROM USER INPUT
@@ -224,10 +198,24 @@ class SIMRegActivity : AppCompatActivity() {
     )
 
     private fun selectPDF() {
+        // Intent.ACTION_OPEN_DOCUMENT or Intent.ACTION_GET_CONTENT
         val data = Intent(Intent.ACTION_OPEN_DOCUMENT)
         data.type = "application/pdf"
         val result = Intent.createChooser(data, "Choose a file")
         sActivityResultLauncher.launch(data)
+    }
+
+    private fun allowedReadExternalStorage(context: Context): Boolean{
+        return ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestReadExternalStorage(activity: Activity){
+        // request permission
+        ActivityCompat.requestPermissions(
+            activity,
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+            1
+        )
     }
 
     override fun onRequestPermissionsResult(

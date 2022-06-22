@@ -7,7 +7,7 @@ class Preferences(val context: Context) {
 
     var sharedPreferences = context.getSharedPreferences(USER_PREF, 0)
 
-    fun setValues(key: String, value: String) {
+    fun setValues(key: String, value: String?) {
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
         editor.putString(key, value)
         editor.apply()
