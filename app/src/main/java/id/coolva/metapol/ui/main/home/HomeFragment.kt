@@ -78,9 +78,15 @@ class HomeFragment : Fragment() {
                 Log.d("Data collect", "fail")
             }
 
-//        // setup preference
+        // setup preference
 //        preferences = Preferences(requireContext())
+//        val name = preferences.getValues(Constants.USER_NAME) ?: ""
 //
+//        if (name.isEmpty() || name == ""){
+//            loadFromFirebase()
+//        } else {
+//            loadFromPreferences()
+//        }
 //        binding.apply {
 //            val name = preferences.getValues(Constants.USER_NAME) ?: "User"
 //            Log.e("HomeFragment: ", name.toString())
@@ -97,17 +103,6 @@ class HomeFragment : Fragment() {
             } else {
                 startActivity(Intent(requireContext(), SIMRegActivity::class.java))
             }
-//            simRegViewModel.getSIMRegistration().observe(viewLifecycleOwner) {
-//                if (it.isNotEmpty() && it != null) {
-//                    Toast.makeText(
-//                        requireContext(),
-//                        "Pendaftaran Ujian SIM anda dalam proses.",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                } else {
-//                    startActivity(Intent(requireContext(), SIMRegActivity::class.java))
-//                }
-//            }
         }
 
         binding.cardSkck.setOnClickListener {
@@ -120,17 +115,6 @@ class HomeFragment : Fragment() {
             } else {
                 startActivity(Intent(requireContext(), SkckRegActivity::class.java))
             }
-//            skckRegViewModel.getSKCKRegList().observe(viewLifecycleOwner) {
-//                if (it.isNotEmpty() && it != null) {
-//                    Toast.makeText(
-//                        requireContext(),
-//                        "Pendaftaran SKCK anda dalam proses.",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                } else {
-//                    startActivity(Intent(requireContext(), SkckRegActivity::class.java))
-//                }
-//            }
         }
 
         binding.cardPengawalan.setOnClickListener {
@@ -145,6 +129,46 @@ class HomeFragment : Fragment() {
                 } else {
                     Toast.makeText(requireContext(), "awww", Toast.LENGTH_SHORT).show()
                 }
+            }
+        }
+    }
+
+    private fun loadFromFirebase() {
+        var user: User? = null
+        db.collection("users").document(firebaseUser!!.uid)
+            .get()
+            .addOnSuccessListener { document ->
+                user = document.toObject(User::class.java)!!
+                Log.e("HomeFragment:", user?.nama.toString())
+                Log.e("HomeFragment:", user?.email.toString())
+                Log.e("HomeFragment:", user?.foto_profil.toString())
+                if (user != null){
+                    preferences.setValues(Constants.USER_NAME, user?.nama)
+                    preferences.setValues(Constants.USER_EMAIL, user?.email)
+                    preferences.setValues(Constants.USER_PHOTO_PATH, user?.foto_profil)
+                    preferences.setValues(
+                        Constants.USER_LOGIN_STATUS,
+                        "1"
+                    ) // if equal to 1, that means user is logged in
+
+                    // then display the data
+                    loadFromPreferences()
+                }
+            }
+    }
+
+    private fun loadFromPreferences() {
+        binding.apply {
+            val name = preferences.getValues(Constants.USER_NAME) ?: "User"
+            val profilePath = preferences.getValues(Constants.USER_PHOTO_PATH) ?: ""
+            Log.e("HomeFragment: ", name.toString())
+            Log.e("HomeFragment: ", profilePath.toString())
+            Log.e("HomeFragment: ", preferences.getValues(Constants.USER_LOGIN_STATUS).toString())
+            tvUserName.text = name
+            if (profilePath != "") {
+                Glide.with(requireContext())
+                    .load(profilePath)
+                    .into(binding.ivUserProfileImage)
             }
         }
     }
