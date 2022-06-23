@@ -26,7 +26,7 @@
                 android:layout_height="46dp"
                 android:clickable="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/profile_pic"
+                tools:src="@drawable/profile_pic"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -72,6 +72,7 @@
             android:textColor="@color/white"
             android:textStyle="bold"
             android:visibility="gone"
+            tools:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

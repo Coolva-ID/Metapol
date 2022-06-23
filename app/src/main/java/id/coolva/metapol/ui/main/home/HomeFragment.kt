@@ -50,37 +50,42 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var user: User? = null
+//        var user: User? = null
         // get profile photo uri from database
-        db.collection("users").document(firebaseUser!!.uid)
-            .get()
-            .addOnSuccessListener { document ->
-                user = document.toObject(User::class.java)!!
-                Log.d("Name", user?.foto_profil.toString())
-                Log.d("Photo", user?.foto_profil.toString())
-                if (user!!.foto_profil.toString() != "") {
-                    Glide.with(requireContext())
-                        .load(user!!.foto_profil.toString())
-                        .into(binding.ivUserProfileImage)
-                }
-                binding.tvUserName.text = user?.nama.toString()
-            }
+//        db.collection("users").document(firebaseUser!!.uid)
+//            .get()
+//            .addOnSuccessListener { document ->
+//                user = document.toObject(User::class.java)!!
+//                Log.e("HomeFragment-Name", user?.foto_profil.toString())
+//                Log.e("HomeFragment-Photo", user?.foto_profil.toString())
+//                if (user!!.foto_profil.toString() != "") {
+//                    Glide.with(requireContext())
+//                        .load(user!!.foto_profil.toString())
+//                        .into(binding.ivUserProfileImage)
+//                }
+//                binding.tvUserName.text = user?.nama.toString()
+//            }
 
+        // setup preference
+        preferences = Preferences(requireContext())
 
+        val name = preferences.getValues(Constants.USER_NAME) ?: ""
 
-//        // setup preference
-//        preferences = Preferences(requireContext())
-//
-//        binding.apply {
-//            val name = preferences.getValues(Constants.USER_NAME) ?: "User"
-//            Log.e("HomeFragment: ", name.toString())
-//            tvUserName.text = name
-//        }
+        if (name.isEmpty() || name == ""){
+            loadFromFirebase()
+        } else {
+            loadFromPreferences()
+        }
+
 
         binding.cardSim.setOnClickListener {
-            simRegViewModel.getSIMRegistration().observe(viewLifecycleOwner){
-                if (it.isNotEmpty() && it != null){
-                    Toast.makeText(requireContext(), "Pendaftaran Ujian SIM anda dalam proses.", Toast.LENGTH_SHORT).show()
+            simRegViewModel.getSIMRegistration().observe(viewLifecycleOwner) {
+                if (it.isNotEmpty() && it != null) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Pendaftaran Ujian SIM anda dalam proses.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 } else {
                     startActivity(Intent(requireContext(), SIMRegActivity::class.java))
                 }
@@ -88,11 +93,15 @@ class HomeFragment : Fragment() {
         }
 
         binding.cardSkck.setOnClickListener {
-            skckRegViewModel.getSKCKRegList().observe(viewLifecycleOwner){
-                if (it.isNotEmpty() && it != null){
-                    Toast.makeText(requireContext(), "Pendaftaran SKCK anda dalam proses.", Toast.LENGTH_SHORT).show()
+            skckRegViewModel.getSKCKRegList().observe(viewLifecycleOwner) {
+                if (it.isNotEmpty() && it != null) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Pendaftaran SKCK anda dalam proses.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 } else {
-            startActivity(Intent(requireContext(), SkckRegActivity::class.java))
+                    startActivity(Intent(requireContext(), SkckRegActivity::class.java))
                 }
             }
         }
@@ -102,13 +111,53 @@ class HomeFragment : Fragment() {
         }
 
         binding.btnClearData.setOnClickListener {
-            simRegViewModel.getSIMRegistration().observe(viewLifecycleOwner){
-                if (it.isNotEmpty() && it != null){
+            simRegViewModel.getSIMRegistration().observe(viewLifecycleOwner) {
+                if (it.isNotEmpty() && it != null) {
                     simRegViewModel.deleteSIMReg()
                     Toast.makeText(requireContext(), "Duh keapus cok", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(requireContext(), "awww", Toast.LENGTH_SHORT).show()
                 }
+            }
+        }
+    }
+
+    private fun loadFromFirebase() {
+        var user: User? = null
+        db.collection("users").document(firebaseUser!!.uid)
+            .get()
+            .addOnSuccessListener { document ->
+                user = document.toObject(User::class.java)!!
+                Log.e("HomeFragment:", user?.nama.toString())
+                Log.e("HomeFragment:", user?.email.toString())
+                Log.e("HomeFragment:", user?.foto_profil.toString())
+                if (user != null){
+                    preferences.setValues(Constants.USER_NAME, user?.nama)
+                    preferences.setValues(Constants.USER_EMAIL, user?.email)
+                    preferences.setValues(Constants.USER_PHOTO_PATH, user?.foto_profil)
+                    preferences.setValues(
+                        Constants.USER_LOGIN_STATUS,
+                        "1"
+                    ) // if equal to 1, that means user is logged in
+
+                    // then display the data
+                    loadFromPreferences()
+                }
+            }
+    }
+
+    private fun loadFromPreferences() {
+        binding.apply {
+            val name = preferences.getValues(Constants.USER_NAME) ?: "User"
+            val profilePath = preferences.getValues(Constants.USER_PHOTO_PATH) ?: ""
+            Log.e("HomeFragment: ", name.toString())
+            Log.e("HomeFragment: ", profilePath.toString())
+            Log.e("HomeFragment: ", preferences.getValues(Constants.USER_LOGIN_STATUS).toString())
+            tvUserName.text = name
+            if (profilePath != "") {
+                Glide.with(requireContext())
+                    .load(profilePath)
+                    .into(binding.ivUserProfileImage)
             }
         }
     }

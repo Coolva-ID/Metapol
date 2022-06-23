@@ -47,6 +47,7 @@ class ProfileFragment : Fragment() {
     val mAuth = FirebaseAuth.getInstance()
     val user: FirebaseUser? = mAuth.currentUser
     val db = Firebase.firestore
+    
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -57,41 +58,43 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        var mUser: User? = null
-        // get profile photo uri from database
-        db.collection("users").document(user!!.uid)
-            .get()
-            .addOnSuccessListener { document ->
-                mUser = document.toObject(User::class.java)!!
-                Log.d("Name", mUser?.foto_profil.toString())
-                Log.d("Photo", mUser?.foto_profil.toString())
-                if (mUser!!.foto_profil.toString() != "") {
-                    Glide.with(requireContext())
-                        .load(mUser!!.foto_profil.toString())
-                        .into(binding.profileImage)
-                }
-            }
-
         // setup preference
         preferences = Preferences(requireContext())
 
-//        binding.btnLogout.setOnClickListener {
-//            // reset data
-//            preferences.setValues(Constants.USER_NAME, null)
-//            preferences.setValues(Constants.USER_EMAIL, null)
-//            preferences.setValues(Constants.USER_PHONE_NUMBER, null)
-////                preferences.setValues(Constants.USER_PHOTO_PATH, user.profilePhoto)
-//            preferences.setValues(Constants.USER_LOGIN_STATUS, "0") // if equal to 1, that means user is logged in
-//
-//            val moveToMain = Intent(requireContext(), LoginActivity::class.java)
-//            startActivity(moveToMain)
-//            activity?.finish()
-//        }
+        loadDataFromPreferences()
+
+        var mUser: User? = null
+        // get profile photo uri from database
+//        db.collection("users").document(user!!.uid)
+//            .get()
+//            .addOnSuccessListener { document ->
+//                mUser = document.toObject(User::class.java)!!
+//                Log.d("Name", mUser?.foto_profil.toString())
+//                Log.d("Photo", mUser?.foto_profil.toString())
+//                if (mUser!!.foto_profil.toString() != "") {
+//                    Glide.with(requireContext())
+//                        .load(mUser!!.foto_profil.toString())
+//                        .into(binding.ivProfileImage)
+//                }
+//            }
+
+
+
 
         binding.btnLogout.setOnClickListener {
+            // sign out from database
             FirebaseAuth.getInstance().signOut()
 
+            // reset data on preferences
+            preferences.setValues(Constants.USER_NAME, null)
+            preferences.setValues(Constants.USER_EMAIL, null)
+            preferences.setValues(Constants.USER_PHOTO_PATH, null)
+            preferences.setValues(
+                Constants.USER_LOGIN_STATUS,
+                "0"
+            ) // if equal to 1, that means user is logged in
+
+            // then move back to Login
             startActivity(Intent(requireContext(), LoginActivity::class.java))
         }
 
@@ -113,6 +116,18 @@ class ProfileFragment : Fragment() {
                     arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
                     1
                 )
+            }
+        }
+    }
+
+    private fun loadDataFromPreferences() {
+        binding.apply {
+            val profilePath = preferences.getValues(Constants.USER_PHOTO_PATH) ?: ""
+            Log.e("ProfileFragment: ", profilePath.toString())
+            if (profilePath != "") {
+                Glide.with(requireContext())
+                    .load(profilePath)
+                    .into(binding.ivProfileImage)
             }
         }
     }
@@ -154,7 +169,11 @@ class ProfileFragment : Fragment() {
                                                 )
                                             }
                                         fileSelected = url
-                                        Log.e("Photo", url.toString())
+                                        Log.e("ProfileFragment(new Url):", url.toString())
+
+                                        // update data in preferences
+                                        updateUserPhotoPreferences()
+                                        
                                     }.addOnFailureListener { exception ->
                                         Toast.makeText(
                                             requireContext(),
@@ -172,6 +191,26 @@ class ProfileFragment : Fragment() {
             }
         }
     )
+
+    private fun updateUserPhotoPreferences() {
+        var mUser: User? = null
+
+        // load data from firebase
+        db.collection("users").document(user!!.uid)
+            .get()
+            .addOnSuccessListener { document ->
+                mUser = document.toObject(User::class.java)!!
+                Log.e("ProfileFragment(PhotoFromFirebase):", mUser?.foto_profil.toString())
+                if (mUser!!.foto_profil.toString() != "") {
+                    // save to preference
+                    preferences.setValues(Constants.USER_PHOTO_PATH, mUser?.foto_profil)
+                    // refresh data
+                    loadDataFromPreferences()
+                    Toast.makeText(requireContext(), "Photo Profile berhasil diperbaharui", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
