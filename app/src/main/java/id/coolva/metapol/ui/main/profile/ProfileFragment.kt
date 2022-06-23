@@ -44,9 +44,9 @@ class ProfileFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var preferences: Preferences
     private var fileSelected: Uri? = null
-    val mAuth = FirebaseAuth.getInstance()
+    private val mAuth = FirebaseAuth.getInstance()
     val user: FirebaseUser? = mAuth.currentUser
-    val db = Firebase.firestore
+    private val db = Firebase.firestore
     
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -79,7 +79,9 @@ class ProfileFragment : Fragment() {
 //            }
 
 
-
+        binding.cardUpdateProfile.setOnClickListener {
+            startActivity(Intent(requireContext(), EditProfileActivity::class.java))
+        }
 
         binding.btnLogout.setOnClickListener {
             // sign out from database
@@ -127,7 +129,7 @@ class ProfileFragment : Fragment() {
             if (profilePath != "") {
                 Glide.with(requireContext())
                     .load(profilePath)
-                    .into(binding.ivProfileImage)
+                    .into(ivProfileImage)
             }
         }
     }
