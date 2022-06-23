@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -35,6 +36,7 @@ class HomeFragment : Fragment() {
     private val simRegViewModel: SimRegViewModel by viewModels()
     val firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     val db = Firebase.firestore
+    val userInDB: DocumentReference = db.collection("users").document(firebaseUser!!.uid)
     private val skckRegViewModel: SkckRegViewModel by viewModels()
 
     private lateinit var preferences: Preferences
@@ -51,22 +53,30 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         var user: User? = null
-        // get profile photo uri from database
-        db.collection("users").document(firebaseUser!!.uid)
-            .get()
+
+        //get user data from database
+        userInDB.get()
             .addOnSuccessListener { document ->
                 user = document.toObject(User::class.java)!!
-                Log.d("Name", user?.foto_profil.toString())
+                Log.d("Name", user?.nama.toString())
                 Log.d("Photo", user?.foto_profil.toString())
+                Log.d("SIM", user?.sim.toString())
+                Log.d("SKCK", user?.skck.toString())
+                Log.d("Photo", user?.kawal.toString())
+                Log.d("Verified", user?.verified.toString())
+                binding.tvUserName.text = user?.nama.toString()
+                // get profile photo uri from database
                 if (user!!.foto_profil.toString() != "") {
                     Glide.with(requireContext())
                         .load(user!!.foto_profil.toString())
                         .into(binding.ivUserProfileImage)
                 }
-                binding.tvUserName.text = user?.nama.toString()
+                if (user!!.verified) {
+                    binding.ivVerifiedLogo.visibility = View.VISIBLE
+                }
+            }.addOnFailureListener {
+                Log.d("Data collect", "fail")
             }
-
-
 
 //        // setup preference
 //        preferences = Preferences(requireContext())
@@ -78,23 +88,49 @@ class HomeFragment : Fragment() {
 //        }
 
         binding.cardSim.setOnClickListener {
-            simRegViewModel.getSIMRegistration().observe(viewLifecycleOwner){
-                if (it.isNotEmpty() && it != null){
-                    Toast.makeText(requireContext(), "Pendaftaran Ujian SIM anda dalam proses.", Toast.LENGTH_SHORT).show()
-                } else {
-                    startActivity(Intent(requireContext(), SIMRegActivity::class.java))
-                }
+            if (user!!.sim != 0) {
+                Toast.makeText(
+                    requireContext(),
+                    "Pendaftaran Ujian SIM anda dalam proses.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                startActivity(Intent(requireContext(), SIMRegActivity::class.java))
             }
+//            simRegViewModel.getSIMRegistration().observe(viewLifecycleOwner) {
+//                if (it.isNotEmpty() && it != null) {
+//                    Toast.makeText(
+//                        requireContext(),
+//                        "Pendaftaran Ujian SIM anda dalam proses.",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                } else {
+//                    startActivity(Intent(requireContext(), SIMRegActivity::class.java))
+//                }
+//            }
         }
 
         binding.cardSkck.setOnClickListener {
-            skckRegViewModel.getSKCKRegList().observe(viewLifecycleOwner){
-                if (it.isNotEmpty() && it != null){
-                    Toast.makeText(requireContext(), "Pendaftaran SKCK anda dalam proses.", Toast.LENGTH_SHORT).show()
-                } else {
-            startActivity(Intent(requireContext(), SkckRegActivity::class.java))
-                }
+            if (user!!.skck != 0) {
+                Toast.makeText(
+                    requireContext(),
+                    "Pendaftaran SKCK anda dalam proses.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                startActivity(Intent(requireContext(), SIMRegActivity::class.java))
             }
+//            skckRegViewModel.getSKCKRegList().observe(viewLifecycleOwner) {
+//                if (it.isNotEmpty() && it != null) {
+//                    Toast.makeText(
+//                        requireContext(),
+//                        "Pendaftaran SKCK anda dalam proses.",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                } else {
+//                    startActivity(Intent(requireContext(), SkckRegActivity::class.java))
+//                }
+//            }
         }
 
         binding.cardPengawalan.setOnClickListener {
@@ -102,8 +138,8 @@ class HomeFragment : Fragment() {
         }
 
         binding.btnClearData.setOnClickListener {
-            simRegViewModel.getSIMRegistration().observe(viewLifecycleOwner){
-                if (it.isNotEmpty() && it != null){
+            simRegViewModel.getSIMRegistration().observe(viewLifecycleOwner) {
+                if (it.isNotEmpty() && it != null) {
                     simRegViewModel.deleteSIMReg()
                     Toast.makeText(requireContext(), "Duh keapus cok", Toast.LENGTH_SHORT).show()
                 } else {

@@ -11,9 +11,13 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import id.coolva.metapol.core.domain.model.User
 import id.coolva.metapol.databinding.ActivityLoginBinding
@@ -71,6 +75,14 @@ class LoginActivity : AppCompatActivity() {
                         .addOnCompleteListener(
                             OnCompleteListener<AuthResult> { task ->
                                 if (task.isSuccessful) {
+                                    val lastLogin = hashMapOf(
+                                        "lastLoginAt" to System.currentTimeMillis().toString()
+                                    )
+                                    val db = Firebase.firestore
+                                    db.collection("users")
+                                        .document(FirebaseAuth.getInstance().uid.toString())
+                                        .set(lastLogin, SetOptions.merge())
+
                                     Toast.makeText(
                                         this,
                                         "Berhasil masuk!",
@@ -181,7 +193,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         if (doubleBackToExitOnce) {
-            val builder = AlertDialog.Builder(this)
+            val builder = MaterialAlertDialogBuilder(this)
             builder.setTitle("Keluar Aplikasi")
             builder.setMessage("Apakah yakin ingin keluar?")
                 .setCancelable(false)

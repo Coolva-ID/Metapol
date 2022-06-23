@@ -2,6 +2,7 @@ package id.coolva.metapol.ui.main.profile
 
 import android.Manifest
 import android.content.ContentValues
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -17,10 +18,12 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.SetOptions
@@ -47,6 +50,7 @@ class ProfileFragment : Fragment() {
     val mAuth = FirebaseAuth.getInstance()
     val user: FirebaseUser? = mAuth.currentUser
     val db = Firebase.firestore
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -90,9 +94,23 @@ class ProfileFragment : Fragment() {
 //        }
 
         binding.btnLogout.setOnClickListener {
-            FirebaseAuth.getInstance().signOut()
+            val builder = MaterialAlertDialogBuilder(requireContext())
+            builder.setTitle("Keluar Aplikasi")
+            builder.setMessage("Apakah yakin ingin keluar?")
+                .setCancelable(false)
+                .setPositiveButton("Yakin", DialogInterface.OnClickListener { dialogInterface, i ->
+                    val alertDialog: AlertDialog = builder.create()
+                    alertDialog.show()
+                    FirebaseAuth.getInstance().signOut()
 
-            startActivity(Intent(requireContext(), LoginActivity::class.java))
+                    startActivity(Intent(requireContext(), LoginActivity::class.java))
+                    activity?.finish()
+                })
+                .setNegativeButton("Tidak", DialogInterface.OnClickListener { dialogInterface, i ->
+                    dialogInterface.cancel()
+                })
+
+
         }
 
         binding.ivChangePhoto.setOnClickListener {

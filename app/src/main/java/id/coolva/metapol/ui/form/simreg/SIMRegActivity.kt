@@ -2,13 +2,16 @@ package id.coolva.metapol.ui.form.simreg
 
 import android.Manifest
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
+import android.webkit.MimeTypeMap
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
@@ -17,8 +20,16 @@ import androidx.activity.result.contract.ActivityResultContracts.StartActivityFo
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.AndroidEntryPoint
 import id.coolva.metapol.R
+import id.coolva.metapol.core.data.testing.User
 import id.coolva.metapol.core.domain.model.SIMRegsitration
 import id.coolva.metapol.databinding.ActivitySimRegistrationBinding
 import java.io.File
@@ -36,6 +47,10 @@ class SIMRegActivity : AppCompatActivity() {
     private var fileSelected = ""
     private var ttdPhotoFilePath: String = ""
     private var pasPhotoFilePath: String = ""
+    val mAuth = FirebaseAuth.getInstance()
+    val user: FirebaseUser? = mAuth.currentUser
+    val db = Firebase.firestore
+    var mUser: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,21 +74,21 @@ class SIMRegActivity : AppCompatActivity() {
         binding.actSertMengemudi.setAdapter(arrayAdapterSertSim)
 
         binding.btnUploadSignature.setOnClickListener {
-            if (!allowedReadExternalStorage(this)){
+            if (!allowedReadExternalStorage(this)) {
                 requestReadExternalStorage(this)
             } else {
                 // when permission is granted
-                selectPDF()
+                selectImage()
                 this.fileSelected = TTD_PHOTO
             }
         }
 
         binding.btnUploadPasPhoto.setOnClickListener {
-            if (!allowedReadExternalStorage(this)){
+            if (!allowedReadExternalStorage(this)) {
                 requestReadExternalStorage(this)
             } else {
                 // when permission is granted
-                selectPDF()
+                selectImage()
                 this.fileSelected = PAS_PHOTO
             }
         }
@@ -142,18 +157,38 @@ class SIMRegActivity : AppCompatActivity() {
                     if (sertMengemudiValue == "Ada") {
                         memilikiSertMengemudi = true
                     }
-                    val simReg = SIMRegsitration(
-                        golonganSIM = golonganSimValue,
-                        memilikiSertMengemudi = memilikiSertMengemudi,
-                        ttdPhotoPath = ttdPhotoValue,
-                        pasPhotoPath = pasPhotoValue,
-                        contactName = contactNameValue,
-                        contactAddress = contactAddressValue,
-                        contactPhoneNo = contactPhoneValue,
-                        status = "Menunggu Verifikasi"
+                    val simReg = hashMapOf(
+                        "uid" to user!!.uid,
+                        "golonganSIM" to golonganSimValue,
+                        "memilikiSertMengemudi" to memilikiSertMengemudi,
+                        "ttd" to ttdPhotoValue,
+                        "pasPhoto" to pasPhotoValue,
+                        "contactName" to contactNameValue,
+                        "contactAddress" to contactAddressValue,
+                        "contactPhoneNo" to contactPhoneValue,
+                        "status" to "Menunggu Verifikasi"
                     )
-                    viewModel.insertSIMRegistration(simReg)
-                    Toast.makeText(this@SIMRegActivity, "Pendaftaran Berhasil Diajukan", Toast.LENGTH_SHORT).show()
+                    db.collection("sim")
+                        .document(user!!.uid)
+                        .set(simReg, SetOptions.merge())
+                        .addOnSuccessListener { documentReference ->
+                            Log.d(
+                                ContentValues.TAG,
+                                "DocumentSnapshot successfully written!"
+                            )
+                        }
+                    val simUpdate = hashMapOf(
+                        "sim" to 1
+                    )
+                    db.collection("users")
+                        .document(user!!.uid)
+                        .set(simUpdate, SetOptions.merge())
+//                    viewModel.insertSIMRegistration(simReg)
+                    Toast.makeText(
+                        this@SIMRegActivity,
+                        "Pendaftaran Berhasil Diajukan",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     onBackPressed()
                 }
             }
@@ -161,7 +196,7 @@ class SIMRegActivity : AppCompatActivity() {
     }
 
 
-    // launcher to get PDF File
+    // launcher to get image File
     private var sActivityResultLauncher = registerForActivityResult(
         StartActivityForResult(),
         ActivityResultCallback<ActivityResult> { result ->
@@ -180,14 +215,92 @@ class SIMRegActivity : AppCompatActivity() {
                         val file = File(path)
                         Log.e("DAFTAR SIM NAMA FILE: ", file.name)
 
-
                         if (this.fileSelected == PAS_PHOTO) {
-                            binding.tvPasPhotoPath.text = file.name
-                            this.pasPhotoFilePath = path
+                            val imageExtension = MimeTypeMap.getSingleton()
+                                .getExtensionFromMimeType(
+                                    contentResolver.getType(
+                                        uri
+                                    )
+                                )
+
+                            // upload photo to google storage
+                            val sRef: StorageReference =
+                                FirebaseStorage.getInstance().reference.child(
+                                    "ppsim-" + user!!.uid.toString() + "-" + System.currentTimeMillis() + "." + imageExtension
+                                )
+                            sRef.putFile(uri)
+                                .addOnSuccessListener { taskSnapshot ->
+                                    taskSnapshot.metadata!!.reference!!.downloadUrl
+                                        .addOnSuccessListener { url ->
+                                            // update image uri in firestore database
+//                                            val userImageUpdate = hashMapOf(
+//                                                "pasPhoto" to url,
+//                                                "uid" to user!!.uid.toString()
+//                                            )
+//                                            db.collection("sim")
+//                                                .document(user!!.uid)
+//                                                .set(userImageUpdate, SetOptions.merge())
+//                                                .addOnSuccessListener { documentReference ->
+//                                                    Log.d(
+//                                                        ContentValues.TAG,
+//                                                        "DocumentSnapshot successfully written!"
+//                                                    )
+//                                                }
+                                            Log.e("pasPhoto", url.toString())
+                                            this.pasPhotoFilePath = url.toString()
+                                        }.addOnFailureListener { exception ->
+                                            Toast.makeText(
+                                                this,
+                                                exception.message,
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                        }
+                                }
+//                            binding.tvPasPhotoPath.text = file.name
 
                         } else if (this.fileSelected == TTD_PHOTO) {
-                            binding.tvSignaturePhotoPath.text = file.name
-                            this.ttdPhotoFilePath = path
+                            val imageExtension = MimeTypeMap.getSingleton()
+                                .getExtensionFromMimeType(
+                                    contentResolver.getType(
+                                        uri
+                                    )
+                                )
+
+                            // upload photo to google storage
+                            val sRef: StorageReference =
+                                FirebaseStorage.getInstance().reference.child(
+                                    "ttdsim-" + user!!.uid.toString() + "-" + System.currentTimeMillis() + "." + imageExtension
+                                )
+                            sRef.putFile(uri)
+                                .addOnSuccessListener { taskSnapshot ->
+                                    taskSnapshot.metadata!!.reference!!.downloadUrl
+                                        .addOnSuccessListener { url ->
+                                            // update image uri in firestore database
+//                                            val userImageUpdate = hashMapOf(
+//                                                "ttd" to url,
+//                                                "uid" to user!!.uid.toString()
+//                                            )
+//                                            db.collection("sim")
+//                                                .document(user!!.uid)
+//                                                .set(userImageUpdate, SetOptions.merge())
+//                                                .addOnSuccessListener { documentReference ->
+//                                                    Log.d(
+//                                                        ContentValues.TAG,
+//                                                        "DocumentSnapshot successfully written!"
+//                                                    )
+//                                                }
+                                            Log.e("ttd", url.toString())
+                                            this.ttdPhotoFilePath = url.toString()
+                                        }.addOnFailureListener { exception ->
+                                            Toast.makeText(
+                                                this,
+                                                exception.message,
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                        }
+                                }
+//                            binding.tvSignaturePhotoPath.text = file.name
+//                            this.ttdPhotoFilePath = path
                         }
                     } else {
                         Toast.makeText(this, "File belum dipilih", Toast.LENGTH_SHORT).show()
@@ -205,11 +318,24 @@ class SIMRegActivity : AppCompatActivity() {
         sActivityResultLauncher.launch(data)
     }
 
-    private fun allowedReadExternalStorage(context: Context): Boolean{
-        return ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+    private fun selectImage() {
+        // Intent.ACTION_OPEN_DOCUMENT or Intent.ACTION_GET_CONTENT
+        val galleryIntent = Intent(
+            Intent.ACTION_PICK,
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        )
+        val result = Intent.createChooser(galleryIntent, "Pilih foto")
+        sActivityResultLauncher.launch(galleryIntent)
     }
 
-    private fun requestReadExternalStorage(activity: Activity){
+    private fun allowedReadExternalStorage(context: Context): Boolean {
+        return ActivityCompat.checkSelfPermission(
+            context,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestReadExternalStorage(activity: Activity) {
         // request permission
         ActivityCompat.requestPermissions(
             activity,
