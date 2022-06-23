@@ -43,7 +43,7 @@
                 android:layout_width="137dp"
                 android:layout_height="137dp"
                 android:clickable="true"
-                android:src="@drawable/profile_pic" />
+                android:src="@drawable/ic_default_profile" />
 
             <ImageView
                 android:id="@+id/iv_change_photo"
@@ -54,7 +54,7 @@
         </FrameLayout>
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_profil_1"
+            android:id="@+id/card_edit_profile"
             style="@style/Widget.Material3.CardView.Filled"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

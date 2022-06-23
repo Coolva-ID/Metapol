@@ -80,6 +80,7 @@ class SIMRegActivity : AppCompatActivity() {
                 // when permission is granted
                 selectImage()
                 this.fileSelected = TTD_PHOTO
+
             }
         }
 
@@ -166,7 +167,8 @@ class SIMRegActivity : AppCompatActivity() {
                         "contactName" to contactNameValue,
                         "contactAddress" to contactAddressValue,
                         "contactPhoneNo" to contactPhoneValue,
-                        "status" to "Menunggu Verifikasi"
+                        "status" to "Menunggu Verifikasi",
+                        "pengajuanAt" to System.currentTimeMillis().toString()
                     )
                     db.collection("sim")
                         .document(user!!.uid)
@@ -190,9 +192,11 @@ class SIMRegActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                     onBackPressed()
+                    finish()
                 }
             }
         }
+
     }
 
 
@@ -257,7 +261,8 @@ class SIMRegActivity : AppCompatActivity() {
                                         }
                                 }
 //                            binding.tvPasPhotoPath.text = file.name
-
+                            binding.btnUploadPasPhoto.text = "Terupload"
+                            binding.btnUploadPasPhoto.setBackgroundColor(0xFF1dd1a1.toInt())
                         } else if (this.fileSelected == TTD_PHOTO) {
                             val imageExtension = MimeTypeMap.getSingleton()
                                 .getExtensionFromMimeType(
@@ -301,6 +306,8 @@ class SIMRegActivity : AppCompatActivity() {
                                 }
 //                            binding.tvSignaturePhotoPath.text = file.name
 //                            this.ttdPhotoFilePath = path
+                            binding.btnUploadSignature.text = "Terupload"
+                            binding.btnUploadSignature.setBackgroundColor(0xFF1dd1a1.toInt())
                         }
                     } else {
                         Toast.makeText(this, "File belum dipilih", Toast.LENGTH_SHORT).show()

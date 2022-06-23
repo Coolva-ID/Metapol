@@ -238,7 +238,10 @@ class RegisterActivity : AppCompatActivity() {
                                     "sim" to 0,
                                     "skck" to 0,
                                     "kawal" to 0,
-                                    "verified" to false
+                                    "verified" to false,
+                                    "registerAt" to System.currentTimeMillis().toString(),
+                                    "lastLoginAt" to System.currentTimeMillis().toString(),
+                                    "noHp" to ""
                                 )
 
                                 db.collection("users")

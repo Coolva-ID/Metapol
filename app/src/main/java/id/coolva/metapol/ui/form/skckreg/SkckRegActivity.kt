@@ -2,12 +2,16 @@ package id.coolva.metapol.ui.form.skckreg
 
 import android.Manifest
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
+import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
@@ -15,6 +19,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.AndroidEntryPoint
 import id.coolva.metapol.core.domain.model.SKCKReg
 import id.coolva.metapol.databinding.ActivitySkckRegBinding
@@ -35,7 +46,9 @@ class SkckRegActivity : AppCompatActivity() {
     private var akteLahirPath: String = ""
     private var kartuKeluargaPath: String = ""
     private var pasPhotoPath: String = ""
-
+    val mAuth = FirebaseAuth.getInstance()
+    val user: FirebaseUser? = mAuth.currentUser
+    val db = Firebase.firestore
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -47,7 +60,7 @@ class SkckRegActivity : AppCompatActivity() {
 
         binding.btnUploadKtp.setOnClickListener {
             if (allowedReadExternalStorage(this)) {
-                selectPDF()
+                selectImage()
                 this.selectedInput = KTP
             } else {
                 requestReadExternalStorage(this)
@@ -56,7 +69,7 @@ class SkckRegActivity : AppCompatActivity() {
 
         binding.btnUploadAkte.setOnClickListener {
             if (allowedReadExternalStorage(this)) {
-                selectPDF()
+                selectImage()
                 this.selectedInput = AKTE_LAHIR
             } else {
                 requestReadExternalStorage(this)
@@ -65,7 +78,7 @@ class SkckRegActivity : AppCompatActivity() {
 
         binding.btnUploadKartuKeluarga.setOnClickListener {
             if (allowedReadExternalStorage(this)) {
-                selectPDF()
+                selectImage()
                 this.selectedInput = KARTU_KELUARGA
             } else {
                 requestReadExternalStorage(this)
@@ -74,7 +87,7 @@ class SkckRegActivity : AppCompatActivity() {
 
         binding.btnUploadPasPhoto.setOnClickListener {
             if (allowedReadExternalStorage(this)) {
-                selectPDF()
+                selectImage()
                 this.selectedInput = PAS_PHOTO
             } else {
                 requestReadExternalStorage(this)
@@ -104,20 +117,124 @@ class SkckRegActivity : AppCompatActivity() {
                         val file = File(path)
                         when (this.selectedInput) {
                             KTP -> {
-                                binding.tvKtpPath.text = file.name
-                                this.ktpPath = path
+                                val imageExtension = MimeTypeMap.getSingleton()
+                                    .getExtensionFromMimeType(
+                                        contentResolver.getType(
+                                            uri
+                                        )
+                                    )
+
+                                // upload photo to google storage
+                                val sRef: StorageReference =
+                                    FirebaseStorage.getInstance().reference.child(
+                                        "ktpskck-" + user!!.uid.toString() + "-" + System.currentTimeMillis() + "." + imageExtension
+                                    )
+                                sRef.putFile(uri)
+                                    .addOnSuccessListener { taskSnapshot ->
+                                        taskSnapshot.metadata!!.reference!!.downloadUrl
+                                            .addOnSuccessListener { url ->
+                                                Log.e("ktp", url.toString())
+                                                this.ktpPath = url.toString()
+                                            }.addOnFailureListener { exception ->
+                                                Toast.makeText(
+                                                    this,
+                                                    exception.message,
+                                                    Toast.LENGTH_LONG
+                                                ).show()
+                                            }
+                                    }
+                                binding.btnUploadKtp.text = "Terupload"
+                                binding.btnUploadKtp.setBackgroundColor(0xFF1dd1a1.toInt())
                             }
                             AKTE_LAHIR -> {
-                                binding.tvAktePath.text = file.name
-                                this.akteLahirPath = path
+                                val imageExtension = MimeTypeMap.getSingleton()
+                                    .getExtensionFromMimeType(
+                                        contentResolver.getType(
+                                            uri
+                                        )
+                                    )
+
+                                // upload photo to google storage
+                                val sRef: StorageReference =
+                                    FirebaseStorage.getInstance().reference.child(
+                                        "akteskck-" + user!!.uid.toString() + "-" + System.currentTimeMillis() + "." + imageExtension
+                                    )
+                                sRef.putFile(uri)
+                                    .addOnSuccessListener { taskSnapshot ->
+                                        taskSnapshot.metadata!!.reference!!.downloadUrl
+                                            .addOnSuccessListener { url ->
+                                                Log.e("akte", url.toString())
+                                                this.akteLahirPath = url.toString()
+                                            }.addOnFailureListener { exception ->
+                                                Toast.makeText(
+                                                    this,
+                                                    exception.message,
+                                                    Toast.LENGTH_LONG
+                                                ).show()
+                                            }
+                                    }
+                                binding.btnUploadAkte.text = "Terupload"
+                                binding.btnUploadAkte.setBackgroundColor(0xFF1dd1a1.toInt())
                             }
                             KARTU_KELUARGA -> {
-                                binding.tvKartuKeluargaPath.text = file.name
-                                this.kartuKeluargaPath = path
+                                val imageExtension = MimeTypeMap.getSingleton()
+                                    .getExtensionFromMimeType(
+                                        contentResolver.getType(
+                                            uri
+                                        )
+                                    )
+
+                                // upload photo to google storage
+                                val sRef: StorageReference =
+                                    FirebaseStorage.getInstance().reference.child(
+                                        "kkskck-" + user!!.uid.toString() + "-" + System.currentTimeMillis() + "." + imageExtension
+                                    )
+                                sRef.putFile(uri)
+                                    .addOnSuccessListener { taskSnapshot ->
+                                        taskSnapshot.metadata!!.reference!!.downloadUrl
+                                            .addOnSuccessListener { url ->
+                                                Log.e("ll", url.toString())
+                                                this.kartuKeluargaPath = url.toString()
+                                            }.addOnFailureListener { exception ->
+                                                Toast.makeText(
+                                                    this,
+                                                    exception.message,
+                                                    Toast.LENGTH_LONG
+                                                ).show()
+                                            }
+                                    }
+                                binding.btnUploadKartuKeluarga.text = "Terupload"
+                                binding.btnUploadKartuKeluarga.setBackgroundColor(0xFF1dd1a1.toInt())
                             }
                             PAS_PHOTO -> {
-                                binding.tvPasPhotoPath.text = file.name
-                                this.pasPhotoPath = path
+                                val imageExtension = MimeTypeMap.getSingleton()
+                                    .getExtensionFromMimeType(
+                                        contentResolver.getType(
+                                            uri
+                                        )
+                                    )
+
+                                // upload photo to google storage
+                                val sRef: StorageReference =
+                                    FirebaseStorage.getInstance().reference.child(
+                                        "ppskck-" + user!!.uid.toString() + "-" + System.currentTimeMillis() + "." + imageExtension
+                                    )
+                                sRef.putFile(uri)
+                                    .addOnSuccessListener { taskSnapshot ->
+                                        taskSnapshot.metadata!!.reference!!.downloadUrl
+                                            .addOnSuccessListener { url ->
+                                                Log.e("ll", url.toString())
+                                                this.pasPhotoPath = url.toString()
+                                            }.addOnFailureListener { exception ->
+                                                Toast.makeText(
+                                                    this,
+                                                    exception.message,
+                                                    Toast.LENGTH_LONG
+                                                ).show()
+                                            }
+                                    }
+                                binding.btnUploadPasPhoto.text = "Terupload"
+                                binding.btnUploadPasPhoto.setBackgroundColor(0xFF1dd1a1.toInt())
                             }
                         }
                     } else {
@@ -136,6 +253,15 @@ class SkckRegActivity : AppCompatActivity() {
         sActivityResultLauncher.launch(intent)
     }
 
+    private fun selectImage() {
+        // Intent.ACTION_OPEN_DOCUMENT or Intent.ACTION_GET_CONTENT
+        val galleryIntent = Intent(
+            Intent.ACTION_PICK,
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        )
+        val result = Intent.createChooser(galleryIntent, "Pilih foto")
+        sActivityResultLauncher.launch(galleryIntent)
+    }
     /**
      * SUBMIT DATA
      */
@@ -147,16 +273,38 @@ class SkckRegActivity : AppCompatActivity() {
             }
 
             if (inputValid) {
-                val skckReg = SKCKReg(
-                    identityCardPhotoPath = ktpPath,
-                    aktePhotoPath = akteLahirPath,
-                    kkPhotoPath = kartuKeluargaPath,
-                    pasPhotoPath = pasPhotoPath,
-                    status = "Menunggu Verifikasi"
+                val skckReg = hashMapOf(
+                    "uid" to user!!.uid,
+                    "identityCardPhotoPath" to ktpPath,
+                    "aktePhotoPath" to akteLahirPath,
+                    "kkPhotoPath" to kartuKeluargaPath,
+                    "pasPhotoPath" to pasPhotoPath,
+                    "status" to "Menunggu Verifikasi",
+                    "pengajuanAt" to System.currentTimeMillis().toString()
                 )
-                viewModel.insertSKCKReg(skckReg)
-                Toast.makeText(this@SkckRegActivity, "Pendaftaran berhasil dikirim", Toast.LENGTH_SHORT).show()
+                db.collection("skck")
+                    .document(user!!.uid)
+                    .set(skckReg, SetOptions.merge())
+                    .addOnSuccessListener { documentReference ->
+                        Log.d(
+                            ContentValues.TAG,
+                            "DocumentSnapshot successfully written!"
+                        )
+                    }
+                val skckUpdate = hashMapOf(
+                    "skck" to 1
+                )
+                db.collection("users")
+                    .document(user!!.uid)
+                    .set(skckUpdate, SetOptions.merge())
+//                viewModel.insertSKCKReg(skckReg)
+                Toast.makeText(
+                    this@SkckRegActivity,
+                    "Pendaftaran Berhasil Diajukan",
+                    Toast.LENGTH_SHORT
+                ).show()
                 onBackPressed()
+                finish()
             } else {
                 Toast.makeText(
                     this@SkckRegActivity,

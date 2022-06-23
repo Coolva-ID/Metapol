@@ -1,8 +1,10 @@
 package id.coolva.metapol.ui.form.escortreq
 
 import android.app.DatePickerDialog
+import android.content.ContentValues
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -13,10 +15,17 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_KEYBOARD
 import com.google.android.material.timepicker.TimeFormat
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import id.coolva.metapol.R
 import id.coolva.metapol.core.domain.model.EscortReq
 import id.coolva.metapol.databinding.ActivityEscortRequestBinding
+import id.coolva.metapol.core.data.testing.User
 import java.util.*
 
 @AndroidEntryPoint
@@ -24,6 +33,9 @@ class EscortRequestActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEscortRequestBinding
     private val viewModel: EscortReqViewModel by viewModels()
+    val mAuth = FirebaseAuth.getInstance()
+    val user: FirebaseUser? = mAuth.currentUser
+    val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -143,20 +155,44 @@ class EscortRequestActivity : AppCompatActivity() {
             }
 
             if (isNotEmpty){
-                val escortReq = EscortReq(
-                    escortPurpose = escortPurpose,
-                    departureDate = departureDate,
-                    departureTime = departureTime,
-                    departurePoint = departurePoint,
-                    destinationPoint = destinationPoint,
-                    jumlahDikawal = jumlahDikawal,
-                    escortVehicleType = escortVehicleType,
-                    numOfEscortVehicle = numOfEscortVehicle.toInt(),
-                    status = "Menunggu Verifikasi"
+                val escortReq = hashMapOf(
+                    "uid" to user!!.uid,
+                    "escortPurpose" to escortPurpose,
+                    "departureDate" to departureDate,
+                    "departureTime" to departureTime,
+                    "departurePoint" to departurePoint,
+                    "destinationPoint" to destinationPoint,
+                    "jumlahDikawal" to jumlahDikawal,
+                    "escortVehicleType" to escortVehicleType,
+                    "numOfEscortVehicle" to numOfEscortVehicle.toInt(),
+                    "status" to "Menunggu Verifikasi",
+                    "pengajuanAt" to System.currentTimeMillis().toString()
                 )
-                viewModel.insertEscortReq(escortReq)
+                db.collection("escort")
+                    .document(user!!.uid)
+                    .set(escortReq, SetOptions.merge())
+                    .addOnSuccessListener { documentReference ->
+                        Log.d(
+                            ContentValues.TAG,
+                            "DocumentSnapshot successfully written!"
+                        )
+                    }
+                val firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+                val userInDB: DocumentReference = db.collection("users").document(firebaseUser!!.uid)
+                userInDB.get()
+                    .addOnSuccessListener { document ->
+                        val mUser = document.toObject(User::class.java)!!
+                        val escortUpdate = hashMapOf(
+                            "kawal" to mUser.kawal+1
+                        )
+                        db.collection("users")
+                            .document(user!!.uid)
+                            .set(escortUpdate, SetOptions.merge())
+                    }
+//                viewModel.insertEscortReq(escortReq)
                 Toast.makeText(this@EscortRequestActivity, "Permohonan Pengawalan berhasil Diajukan", Toast.LENGTH_SHORT).show()
                 onBackPressed()
+                finish()
             }
         }
     }

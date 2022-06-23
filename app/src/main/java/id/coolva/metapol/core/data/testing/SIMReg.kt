@@ -9,5 +9,6 @@ class SIMReg (
     val contactName: String,
     val contactAddress: String,
     val contactPhoneNo: String,
-    var status: String
+    var status: String,
+    val pengajuanAt: String
     )

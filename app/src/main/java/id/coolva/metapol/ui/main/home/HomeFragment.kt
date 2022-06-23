@@ -118,7 +118,7 @@ class HomeFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                startActivity(Intent(requireContext(), SIMRegActivity::class.java))
+                startActivity(Intent(requireContext(), SkckRegActivity::class.java))
             }
 //            skckRegViewModel.getSKCKRegList().observe(viewLifecycleOwner) {
 //                if (it.isNotEmpty() && it != null) {

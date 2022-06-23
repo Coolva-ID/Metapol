@@ -33,12 +33,11 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import id.coolva.metapol.R
 import id.coolva.metapol.core.data.testing.User
-import id.coolva.metapol.databinding.FragmentHomeBinding
-import id.coolva.metapol.databinding.FragmentProfileBinding
 import id.coolva.metapol.ui.auth.LoginActivity
 import id.coolva.metapol.ui.main.MainActivity
 import id.coolva.metapol.utils.Constants
 import id.coolva.metapol.utils.Preferences
+import id.coolva.metapol.databinding.FragmentProfileBinding
 
 
 class ProfileFragment : Fragment() {
@@ -50,7 +49,7 @@ class ProfileFragment : Fragment() {
     val mAuth = FirebaseAuth.getInstance()
     val user: FirebaseUser? = mAuth.currentUser
     val db = Firebase.firestore
-
+    var mUser: User? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,7 +61,7 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var mUser: User? = null
+
         // get profile photo uri from database
         db.collection("users").document(user!!.uid)
             .get()
@@ -94,6 +93,7 @@ class ProfileFragment : Fragment() {
 //        }
 
         binding.btnLogout.setOnClickListener {
+            Log.e("Keluar", "Kepencet")
             val builder = MaterialAlertDialogBuilder(requireContext())
             builder.setTitle("Keluar Aplikasi")
             builder.setMessage("Apakah yakin ingin keluar?")
@@ -102,15 +102,15 @@ class ProfileFragment : Fragment() {
                     val alertDialog: AlertDialog = builder.create()
                     alertDialog.show()
                     FirebaseAuth.getInstance().signOut()
-
+                    Log.e("Keluar", "Berhasil")
                     startActivity(Intent(requireContext(), LoginActivity::class.java))
                     activity?.finish()
                 })
                 .setNegativeButton("Tidak", DialogInterface.OnClickListener { dialogInterface, i ->
                     dialogInterface.cancel()
                 })
-
-
+            val alertDialog: AlertDialog = builder.create()
+            alertDialog.show()
         }
 
         binding.ivChangePhoto.setOnClickListener {
@@ -132,6 +132,10 @@ class ProfileFragment : Fragment() {
                     1
                 )
             }
+        }
+
+        binding.cardEditProfile.setOnClickListener {
+            startActivity(Intent(requireContext(), EditProfileActivity::class.java))
         }
     }
 
@@ -173,6 +177,9 @@ class ProfileFragment : Fragment() {
                                             }
                                         fileSelected = url
                                         Log.e("Photo", url.toString())
+                                        Glide.with(requireContext())
+                                            .load(mUser!!.foto_profil.toString())
+                                            .into(binding.profileImage)
                                     }.addOnFailureListener { exception ->
                                         Toast.makeText(
                                             requireContext(),

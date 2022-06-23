@@ -9,5 +9,6 @@ class User (
     val kawal:Int = 0,
     val verified:Boolean = false,
     val registerAt:String = "",
-    val lastLoginAt:String = ""
+    val lastLoginAt:String = "",
+    val noHp:String = ""
 )
