@@ -104,6 +104,9 @@ class ProfileFragment : Fragment() {
                 .setPositiveButton("Yakin", DialogInterface.OnClickListener { dialogInterface, i ->
                     val alertDialog: AlertDialog = builder.create()
                     alertDialog.show()
+
+                    preferences.setValues(Constants.USER_LOGIN_STATUS, "0")
+
                     FirebaseAuth.getInstance().signOut()
                     Log.e("Keluar", "Berhasil")
                     startActivity(Intent(requireContext(), LoginActivity::class.java))

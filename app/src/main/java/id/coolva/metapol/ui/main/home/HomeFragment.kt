@@ -17,6 +17,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
+import id.coolva.metapol.R
 import id.coolva.metapol.core.data.testing.User
 import id.coolva.metapol.databinding.FragmentHomeBinding
 import id.coolva.metapol.ui.form.simreg.SIMRegActivity
@@ -69,6 +70,10 @@ class HomeFragment : Fragment() {
                 if (user!!.foto_profil.toString() != "") {
                     Glide.with(requireContext())
                         .load(user!!.foto_profil.toString())
+                        .into(binding.ivUserProfileImage)
+                } else {
+                    Glide.with(requireContext())
+                        .load(R.drawable.ic_default_profile)
                         .into(binding.ivUserProfileImage)
                 }
                 if (user!!.verified) {

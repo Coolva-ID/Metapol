@@ -26,6 +26,7 @@ import id.coolva.metapol.databinding.ActivityLoginBinding
 import id.coolva.metapol.ui.main.MainActivity
 import id.coolva.metapol.ui.main.profile.UserViewModel
 import id.coolva.metapol.utils.Constants
+import id.coolva.metapol.utils.Constants.Companion.USER_LOGIN_STATUS
 import id.coolva.metapol.utils.DummyData
 import id.coolva.metapol.utils.Preferences
 
@@ -47,12 +48,12 @@ class LoginActivity : AppCompatActivity() {
         preferences = Preferences(this)
 
         // check if user already login, then intent to MainActivity
-//        if (preferences.getValues(Constants.USER_LOGIN_STATUS).equals("1")){
-//            finishAffinity()
-//
-//            val moveToMain = Intent(this@LoginActivity, MainActivity::class.java)
-//            startActivity(moveToMain)
-//        }
+        if (preferences.getValues(Constants.USER_LOGIN_STATUS).equals("1")){
+            finishAffinity()
+
+            val moveToMain = Intent(this@LoginActivity, MainActivity::class.java)
+            startActivity(moveToMain)
+        }
         
 //        observeUserList()
 
@@ -90,6 +91,8 @@ class LoginActivity : AppCompatActivity() {
                                         Toast.LENGTH_SHORT
                                     ).show()
                                     val moveToMain = Intent(this, MainActivity::class.java)
+
+                                    preferences.setValues(USER_LOGIN_STATUS, "1")
                                     startActivity(moveToMain)
                                     finish()
                                 } else {

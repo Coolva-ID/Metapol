@@ -173,7 +173,7 @@ class RegisterActivity : AppCompatActivity() {
             } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 validInput = false
                 edtEmailRegister.error = "Email tidak valid"
-            } else if (emailAlreadyUsed(email)) {
+            } else if (emailAlreadyUsed(email)) {   // TODO: Check APAKAH masih perlu?
                 validInput = false
                 edtEmailRegister.error = "Email sudah digunakan silahkan login"
             }

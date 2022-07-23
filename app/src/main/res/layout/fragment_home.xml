@@ -26,7 +26,7 @@
                 android:layout_height="46dp"
                 android:clickable="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_default_profile"
+                tools:src="@drawable/ic_default_profile"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
